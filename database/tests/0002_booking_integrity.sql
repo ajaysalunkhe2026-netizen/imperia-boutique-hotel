@@ -141,10 +141,17 @@ BEGIN
   END IF;
   UPDATE public.room_categories SET is_bookable = true WHERE id = c;
 
+  -- Create a valid allocation for the checkout lifecycle test.
+  INSERT INTO public.room_allocations (
+    property_id, reservation_id, room_id, check_in, check_out, status
+  ) VALUES (
+    p, booking_two, r, DATE '2030-01-12', DATE '2030-01-14', 'CONFIRMED'
+  ) RETURNING id INTO allocation;
+
   -- 7. Check-out releases checked-in allocations.
   UPDATE public.room_allocations
   SET status = 'CHECKED_IN'
-  WHERE reservation_id = booking_two;
+  WHERE id = allocation;
   UPDATE public.reservations
   SET status = 'CHECKED_IN'
   WHERE id = booking_two;
