@@ -3,6 +3,13 @@ import { NextResponse, type NextRequest } from "next/server";
 import { getSupabasePublicEnv } from "./env";
 
 export async function updateSession(request: NextRequest) {
+  // The public hotel website must remain available before Auth is configured.
+  // Protected server routes still fail closed when their required env is absent.
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL ||
+      !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
+    return NextResponse.next({ request });
+  }
+
   const { url, publishableKey } = getSupabasePublicEnv();
   let response = NextResponse.next({ request });
 

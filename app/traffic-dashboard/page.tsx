@@ -25,6 +25,12 @@ const metrics = [
 ];
 
 export default async function TrafficDashboardPage() {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL ||
+      !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+      !process.env.SUPABASE_SECRET_KEY) {
+    notFound();
+  }
+
   const principal = await resolvePrincipal();
   if (!authorize({ principal, permission: "platform:diagnostics" }).allowed) {
     notFound();
