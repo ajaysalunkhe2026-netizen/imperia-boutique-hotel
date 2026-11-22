@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight, MapPin, Phone, Mail, MessageCircle, BedDouble, Clock3 } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, MapPin, Phone, Mail, MessageCircle } from "lucide-react";
 
 const address = "Plot No. P-52, TTC MIDC Industrial Area, Village Rabale, Thane–Belapur Road, Navi Mumbai, Maharashtra 400701";
 const phone = "+918369011041";

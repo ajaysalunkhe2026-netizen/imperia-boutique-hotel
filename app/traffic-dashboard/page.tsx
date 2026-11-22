@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Activity, ArrowLeft, ArrowUpRight, BarChart3, Globe2, MousePointerClick, Smartphone, ShieldCheck } from "lucide-react";
-import { authorize } from "@/lib/authz/policy.mjs";
+import { authorize } from "@/lib/authz/policy";
 import { resolvePrincipal } from "@/lib/authz/resolve-principal";
 
 export const dynamic = "force-dynamic";

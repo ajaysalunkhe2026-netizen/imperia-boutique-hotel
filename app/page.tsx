@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import {
-  ArrowDown, ArrowRight, ArrowUpRight, BedDouble, Check, Clock3,
+  ArrowRight, ArrowUpRight, BedDouble, Check, Clock3,
   Coffee, MapPin, Menu, Sparkles, Wifi, Wind, Droplets, ConciergeBell,
 } from "lucide-react";
 
