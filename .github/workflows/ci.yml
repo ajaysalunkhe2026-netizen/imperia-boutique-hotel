@@ -68,7 +68,7 @@ jobs:
             echo "Applying $migration"
             psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f "$migration"
           done
-      - name: Run database integrity tests
+      - name: Run database integrity and RLS tests
         run: |
           for test_file in database/tests/*.sql; do
             echo "Running $test_file"

@@ -8,6 +8,7 @@ This directory contains the PostgreSQL schema and integrity/security migrations 
 2. `migrations/0002_auth_identity_and_platform_admin.sql` — Supabase Auth user mapping and separate global Platform Admin assignments.
 3. `migrations/0003_enable_rls_default_deny.sql` — enables Row Level Security on every application table with no permissive client policies.
 4. `migrations/0004_booking_integrity_and_audit_guards.sql` — database-maintained timestamps, room/category bookability validation, reservation/allocation lifecycle consistency, webhook checks and append-only audit/admin assignment history.
+5. `migrations/0005_authenticated_read_policies.sql` — authenticated SELECT-only RLS policies for self, property staff and guest-owned rows. No client writes are enabled.
 
 ## Automated database verification
 
@@ -21,8 +22,10 @@ psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f database/migrations/0001_initial_sche
 psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f database/migrations/0002_auth_identity_and_platform_admin.sql
 psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f database/migrations/0003_enable_rls_default_deny.sql
 psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f database/migrations/0004_booking_integrity_and_audit_guards.sql
+psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f database/migrations/0005_authenticated_read_policies.sql
 psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f database/tests/0001_constraints.sql
 psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f database/tests/0002_booking_integrity.sql
+psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f database/tests/0003_rls_access.sql
 ```
 
 The SQL test files wrap fixtures in transactions and roll them back. Never point test scripts at a live hotel database.
@@ -49,10 +52,10 @@ The SQL test files wrap fixtures in transactions and roll them back. Never point
 
 ## Important limitations
 
-- Migration 0003 intentionally blocks all direct client table access until granular policies are implemented and tested. Browser Data API queries will not work yet.
+- Migration 0003 initially blocks direct client table access. Migration 0005 adds narrowly scoped authenticated SELECT access only; all direct client writes remain denied. Anonymous/public website reads are not enabled.
 - The server admin client bypasses RLS. It is only a trusted backend building block, not a substitute for per-request authorization.
 - No booking API, payment gateway, webhook endpoint, trusted expiry worker, reporting views/RPCs or commission ledger is implemented yet.
 - No Platform Admin provisioning function exists. Assignment creation must remain a trusted, audited operator workflow.
-- No granular authenticated-user RLS policies are implemented yet.
+- Migration 0005 implements authenticated SELECT policies for hotel staff, guest-owned records and self identity. Owner/Manager/Guest write policies are intentionally not enabled; trusted server workflows are still required.
 - The proposed 15% gross commission remains pending written hotel-owner approval and a precise gross-revenue/refund definition.
 - Migrations are source code only until explicitly applied and verified against the intended development project.
