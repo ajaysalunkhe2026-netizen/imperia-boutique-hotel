@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "node --test lib/**/*.test.mjs"
+    "test": "node --test lib/authz/policy.test.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.7",

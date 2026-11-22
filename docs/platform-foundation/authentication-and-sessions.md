@@ -1,71 +1,48 @@
-# Authentication and Secure Session Architecture — ADR 0002
+# Authentication and Secure Session Architecture
 
-Status: architecture decision draft; no provider has been connected and no login/session code is enabled.
+Status: Supabase Auth is the selected development integration. Production identity activation still requires hotel-owner approval and security acceptance.
 
-## Decision summary
+## Decision
 
-Keep the application authentication-provider-neutral until the hotel approves an identity provider and its operational cost. The application must consume a verified server-side identity, resolve the local application user, load current database memberships, and then call the existing authorization policy. Authentication and authorization remain separate concerns.
-
-Do not treat a role, property ID, email address, or user ID supplied by a browser as proof of identity or permission.
+Use Supabase Auth for credential verification and identity lifecycle. Use the application's own `app_users`, `property_memberships`, and `platform_admin_assignments` records as the source of application authorization. Authentication and authorization remain separate concerns.
 
 ## Trust flow
 
-1. The browser starts an authentication flow with the selected provider.
-2. The provider verifies the credential and returns a signed/otherwise verifiable authentication result.
-3. A server-only callback validates the result (issuer, audience/client, signature or provider SDK verification, expiry, nonce/state and redirect URI as applicable).
-4. The server maps the provider's immutable subject identifier to one local `app_users` record. Email alone is not a stable identity key.
-5. The server checks that the local account is active and that required email/identity verification is satisfied.
-6. For each protected request, the server loads active property memberships from PostgreSQL. Roles and membership status are not trusted from client state or stale browser claims.
-7. The server constructs the `Principal` object and calls `authorize()` before reading or mutating protected resources.
-8. The server writes security-relevant allow/deny and account/session events to the audit trail without logging credentials, tokens, cookies, or payment secrets.
+1. The browser authenticates through the configured Supabase Auth flow.
+2. Supabase issues the cookie-backed session managed by `@supabase/ssr`.
+3. Next.js 16 `proxy.ts` refreshes the session using the Supabase SSR integration.
+4. Protected server code validates the session with `auth.getUser()`.
+5. The immutable Supabase Auth user UUID maps to `app_users.auth_user_id`; email alone is never the identity key.
+6. The server checks local account status, confirmed email, current property memberships and any active global Platform Admin assignment.
+7. The server constructs a `Principal` and calls `authorize()` before reading or mutating protected resources.
+8. Security-relevant allow/deny and account events are audited without logging credentials, tokens, cookies, guest PII or payment secrets.
 
 ## Session requirements
 
-- Prefer opaque, cryptographically random server-side session identifiers; store only a hash of the identifier in the database.
-- Browser cookie must be `HttpOnly`, `Secure` in HTTPS environments, and an appropriate `SameSite` value. Use a host-only cookie; do not widen the domain without a documented need.
-- Rotate the session after authentication, privilege changes, password/identity recovery, and other re-authentication events.
-- Enforce server-side expiry, revocation, logout invalidation, and account-disable invalidation. Cookie expiry alone is insufficient.
-- Define idle and absolute lifetime separately for staff and guest sessions after the hotel approves the UX/security trade-off.
-- Protect state-changing requests against CSRF; validate origin where appropriate and use framework-supported protections.
-- Rate-limit authentication, recovery, verification, and session endpoints. Avoid account-enumeration responses.
-- Never put access tokens, refresh tokens, session IDs, or secrets in localStorage, URLs, logs, analytics, or client-visible environment variables.
-- Require MFA for platform administrators and hotel-owner accounts before production access. Manager MFA policy must be decided before launch.
-- Re-check current membership and account status server-side for protected operations; high-risk actions may require recent re-authentication.
+- Use the provider-managed cookie session; do not copy access/refresh tokens into localStorage or URLs.
+- Cookie settings must remain HttpOnly, Secure in HTTPS environments, host-only, and use an appropriate SameSite policy.
+- Refresh sessions through the Next.js 16 proxy integration; do not use `getSession()` as proof of identity.
+- Re-check local account and membership status server-side for every protected operation.
+- Protect state-changing requests against CSRF and validate origin where appropriate.
+- Rate-limit authentication, recovery, verification and invitation endpoints.
+- Require MFA for Platform Admin and hotel-owner production access. Decide manager MFA before launch.
+- High-risk operations may require recent re-authentication and an audit event.
 
-## Database changes required after provider selection
+## Database mapping
 
-The current `app_users` table is a local application identity record, not an authentication credential store. Before enabling login, review and add migrations for:
-
-- `auth_identities`: local user ID, provider/issuer, immutable provider subject, created/last-used timestamps; unique on (provider, subject).
-- `auth_sessions`: local user ID, hashed opaque session token, created/last-seen/idle-expiry/absolute-expiry/revoked timestamps and minimal device metadata.
-- Optional one-time verification/recovery records, stored hashed and expiring, if not fully delegated to the selected provider.
-- A distinct global platform-role assignment model. The current property-membership table is property-scoped; a global `platform_admin` role must not be represented as an ordinary hotel membership. Update the policy principal loader and schema together.
-
-Do not store raw passwords or provider tokens in these tables. If a provider is responsible for credential storage and session management, document exactly which session guarantees it supplies and which remain the application's responsibility.
-
-## Authorization integration contract
-
-- Resolve the session only in server-only code.
-- Load the user and active memberships from the database for the requested property.
-- Construct `Principal` from those verified records, never from request JSON, query strings, headers, client components, or JWT role claims.
-- Call the policy in every protected Route Handler, Server Action, and server-side data access path.
-- Resolve a requested resource under the same property scope before passing its owner ID to guest ownership checks.
-- Return 401 for no valid identity and 403 for an authenticated identity without permission; avoid leaking whether another user's resource exists.
-- Keep authorization checks close to the data operation and use database transactions for sensitive mutations.
-- Add route-level tests for cross-property access, disabled accounts, revoked sessions, changed memberships, guest ownership, CSRF, and concurrent high-risk actions.
-
-## Provider selection gate
-
-Evaluate the provider against: Next.js 16 compatibility, secure server-side session verification, MFA/passkeys, email verification/recovery, rate limiting, auditability, account export/deletion, data residency/privacy terms, PostgreSQL integration, vendor lock-in, support, and total monthly cost.
-
-No provider is selected in this ADR. A paid provider, hosted database, email/SMS service, or production credential must not be created until the owner approves the provider and budget. The first implementation target should be a development-only environment with synthetic accounts.
+- `app_users.auth_user_id` references `auth.users(id)` and has a unique partial index.
+- `platform_admin_assignments` is a separate global authority model.
+- Guest access is derived only from a guest profile explicitly linked to the authenticated local app user.
+- Never grant roles from browser-submitted values or user-editable Auth metadata.
 
 ## Explicitly not implemented
 
-- No login, signup, password, OAuth, magic-link, MFA, recovery, or logout screens.
-- No session cookie, session table, identity mapping, auth SDK, or auth middleware.
-- No database connection or membership resolver.
-- No protected dashboard/API route integration.
-- No production identity provider or secrets.
+- Login, logout, invitation, password recovery, MFA and guest authentication screens.
+- Trusted staff provisioning and role-grant workflows.
+- Booking, payment, cancellation or refund APIs.
+- Protected owner/manager business dashboards.
+- Commission ledger or aggregate reporting endpoints.
+- Granular client-facing RLS policies. RLS is currently enabled with default-deny behavior.
+- Database migrations have not been applied to Supabase.
 
-This document defines the security contract; it is not evidence that authentication is active.
+This document describes the implementation boundary; it is not evidence that production authentication or business workflows are active.

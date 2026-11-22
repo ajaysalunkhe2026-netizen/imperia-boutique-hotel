@@ -1,23 +1,36 @@
 # Server-side authorization policy
 
-## Implemented in this change
+## Implemented
+
 - `lib/authz/policy.mjs` is a pure, deny-by-default authorization decision function.
-- `lib/authz/policy.d.ts` provides TypeScript types for application integration.
-- `lib/authz/policy.test.mjs` covers role boundaries, property isolation, guest ownership, inactive memberships, and unknown permissions.
+- `lib/authz/policy.d.ts` provides TypeScript types.
+- `lib/authz/policy.test.mjs` tests role boundaries, property isolation, guest ownership, aggregate Platform Admin reporting, inactive memberships and unknown permissions.
+- Permission arrays are frozen at runtime; callers should use `authorize()` rather than mutate permission data.
 
 ## Trust boundary — critical
-The policy function does not authenticate a user and does not create a session. Its `principal` input MUST be constructed on the server from a verified authentication session and current database membership records. Never construct it from a request body, query parameter, client-side role, or untrusted header.
 
-Call authorization inside every server route/action before reading or mutating protected data. For guest resource access, load the resource under the requested property scope and pass its verified owner user ID to the policy. Do not trust an owner ID supplied by the browser.
+The policy function does not authenticate a user. Its principal MUST be constructed on the server from a verified Supabase Auth user and current database assignments. Never construct it from a request body, query parameter, client-side role, or untrusted header.
+
+Call authorization inside every server route/action before reading or mutating protected data. For guest resource access, load the resource under the requested property scope and pass its verified owner user ID to the policy.
 
 ## Role boundaries
-- Platform admin: platform operations and diagnostics only when a trusted server-side resolver confirms an active `platform_admin_assignments` row; no automatic hotel financial, booking, or business-report access. Platform administration is not represented as a property membership.
-- Hotel owner: hotel-level reports and approved business authority within the exact property membership.
-- Hotel manager: reservation and room operations; no business financial reports or refund approval.
-- Guest: own reservation/payment/profile permissions only, with resource ownership checked.
+
+- Platform Admin: platform operations, diagnostics, and explicit aggregate business/revenue/commission reporting only. No raw reservation, guest or payment row access; no booking, rate, payment, hotel-record or staff-permission changes.
+- Hotel Owner: hotel business data and owner-level reports within the assigned property, subject to approved workflows.
+- Hotel Manager: daily reservation and room operations within assigned permissions; no business revenue reports or refund approvals.
+- Guest: own reservation/payment/profile permissions only, with ownership checked against trusted database records.
+
+## Platform Admin report permissions
+
+- `reports:business:aggregate:read`
+- `reports:revenue:aggregate:read`
+- `reports:commission:read`
+
+These permissions are policy gates only. A future reporting endpoint must use restricted aggregate SQL/views/RPCs and must not query or return guest names, phone numbers, email addresses, private requests, documents, or raw booking/payment records.
 
 ## Limitations and next integration gate
-- No authenticated principal resolver or database membership adapter is implemented yet. The caller must resolve `isPlatformAdmin` from `platform_admin_assignments` and property memberships from `property_memberships`.
-- This module is not yet wired into public website routes or dashboards. It is a tested policy core, not a complete access-control deployment.
-- Final owner/manager authority boundaries (especially pricing, refunds, cancellation overrides, and staff administration) require hotel owner approval.
-- Add route-level integration tests and security review before exposing dashboards or booking management.
+
+- The policy is not a substitute for database RLS or data-layer filtering.
+- No booking/payment/reporting API is implemented yet.
+- The commission schema is not implemented. The proposed 15% gross commission is pending written hotel-owner approval and precise gross/refund definitions.
+- Add route-level integration tests and database RLS tests before exposing dashboards or booking management.

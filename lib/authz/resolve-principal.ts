@@ -4,55 +4,49 @@ import type { Principal, AppRole } from "./policy";
 import { createClient as createSessionClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-type AuthClaims = {
-  sub?: unknown;
-  email_verified?: unknown;
-};
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-const isUuidLike = (value: unknown): value is string =>
-  typeof value === "string" && value.length > 0;
+const isUuid = (value: unknown): value is string =>
+  typeof value === "string" && UUID_PATTERN.test(value);
 
 function throwIfError(error: { message?: string } | null, operation: string): void {
   if (error) {
-    // Do not log tokens, guest data, or provider payloads here.
+    // Never log access tokens, guest data, or provider payloads.
     throw new Error(`Identity resolution failed during ${operation}.`);
   }
 }
 
 /**
- * Resolves a verified Supabase session into application identity and fresh
- * property/global assignments. Must only be called from trusted server code.
+ * Resolve a verified Supabase Auth user to current application assignments.
+ * This function is server-only and does not itself authorize a business action.
  *
- * Returns null for unauthenticated, unverified, disabled, or unmapped users.
- * Throws a generic error for database/provider failures so callers fail closed.
+ * Invalid/unconfirmed/unmapped identities return null. Privileged database
+ * failures throw a generic error so callers fail closed.
  */
 export async function resolvePrincipal(): Promise<Principal | null> {
   const sessionClient = await createSessionClient();
-  const { data: claimData, error: claimError } = await sessionClient.auth.getClaims();
 
-  if (claimError || !claimData?.claims) return null;
-  const claims = claimData.claims as AuthClaims;
-  if (!isUuidLike(claims.sub) || claims.email_verified !== true) return null;
+  // getUser() validates the cookie-backed access token against Supabase Auth
+  // and returns the current Auth user record. Do not trust getSession().user.
+  const { data: userData, error: authError } = await sessionClient.auth.getUser();
+  if (authError || !userData.user) return null;
+
+  const authUser = userData.user;
+  if (!isUuid(authUser.id) || !authUser.email || !authUser.email_confirmed_at) {
+    return null;
+  }
 
   const admin = createAdminClient();
-  const { data: identity, error: identityError } = await admin
-    .from("auth_identities")
-    .select("app_user_id")
-    .eq("provider", "supabase")
-    .eq("provider_subject", claims.sub)
-    .maybeSingle();
-  throwIfError(identityError, "identity lookup");
-  if (!identity || !isUuidLike(identity.app_user_id)) return null;
-
-  const appUserId = identity.app_user_id;
-  const { data: appUser, error: userError } = await admin
+  const { data: appUser, error: identityError } = await admin
     .from("app_users")
     .select("id,is_active")
-    .eq("id", appUserId)
+    .eq("auth_user_id", authUser.id)
     .maybeSingle();
-  throwIfError(userError, "application user lookup");
-  if (!appUser || appUser.is_active !== true) return null;
 
+  throwIfError(identityError, "application identity lookup");
+  if (!appUser || appUser.is_active !== true || !isUuid(appUser.id)) return null;
+
+  const appUserId = appUser.id;
   const [
     { data: memberships, error: membershipsError },
     { data: adminAssignment, error: adminError },
@@ -77,10 +71,12 @@ export async function resolvePrincipal(): Promise<Principal | null> {
   throwIfError(guestError, "guest profile lookup");
 
   const resolvedMemberships: Principal["memberships"] = [];
+
   for (const membership of memberships ?? []) {
     const role = membership.role as AppRole;
     if (role !== "hotel_owner" && role !== "hotel_manager") continue;
-    if (!isUuidLike(membership.property_id)) continue;
+    if (!isUuid(membership.property_id)) continue;
+
     resolvedMemberships.push({
       propertyId: membership.property_id,
       role,
@@ -88,9 +84,13 @@ export async function resolvePrincipal(): Promise<Principal | null> {
     });
   }
 
+  // A guest gets property scope only when a guest profile is explicitly linked
+  // to this authenticated application user. Guest PII is never returned here.
   for (const guest of guestProfiles ?? []) {
-    if (!isUuidLike(guest.property_id)) continue;
-    if (!resolvedMemberships.some(m => m.propertyId === guest.property_id && m.role === "guest")) {
+    if (!isUuid(guest.property_id)) continue;
+    if (!resolvedMemberships.some(
+      (membership) => membership.propertyId === guest.property_id && membership.role === "guest",
+    )) {
       resolvedMemberships.push({
         propertyId: guest.property_id,
         role: "guest",
