@@ -43,18 +43,18 @@ export default function Home() {
           <span className="wordmark-text">IMPERIA<small>BOUTIQUE HOTEL</small></span>
         </Link>
         <nav className="nav" aria-label="Main navigation">
-          <Link href="#hotel">THE HOTEL</Link>
-          <Link href="#rooms">ROOMS & SUITES</Link>
-          <Link href="#amenities">AMENITIES</Link>
-          <Link href="#location">LOCATION</Link>
+          <Link href="/hotel">THE HOTEL</Link>
+          <Link href="/rooms">ROOMS</Link>
+          <Link href="/dining">DINING</Link>
+          <Link href="/contact">CONTACT</Link>
         </nav>
         <Link className="header-cta" href="#enquire">ENQUIRE NOW <ArrowUpRight size={15} /></Link>
         <Link className="mobile-menu" href="#mobile-nav" aria-label="Open navigation"><Menu /></Link>
       </header>
       <nav id="mobile-nav" className="mobile-nav" aria-label="Mobile navigation">
-        <Link href="#hotel">The Hotel</Link><Link href="#rooms">Rooms & Suites</Link>
-        <Link href="#amenities">Amenities</Link><Link href="#location">Location</Link>
-        <Link href="#enquire">Enquire</Link>
+        <Link href="/hotel">The Hotel</Link><Link href="/rooms">Rooms & Suites</Link>
+        <Link href="/dining">Dining</Link><Link href="/experiences">Experiences</Link>
+        <Link href="/offers">Offers</Link><Link href="/contact">Contact</Link><Link href="/booking">Booking enquiry</Link>
       </nav>
 
       <section className="hero">
