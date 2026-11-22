@@ -189,7 +189,7 @@ RESET ROLE;
 -- Authenticated users get SELECT only on approved tables; anonymous users
 -- get no application-table access. Webhook events and admin assignments are
 -- never exposed directly to either API role.
-DO $$
+DO $privcheck$
 DECLARE
   table_name text;
   write_privilege text;
@@ -223,6 +223,6 @@ BEGIN
   END IF;
   RAISE NOTICE 'PASS: anonymous denial, authenticated read-only grants, and protected internal tables.';
 END;
-$;
+$privcheck$;
 
 ROLLBACK;
