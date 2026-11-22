@@ -52,3 +52,37 @@
 .subpage-footer{padding:22px 5.2%;display:flex;align-items:center;justify-content:space-between;gap:16px;background:#111b16;color:#aeb4a9;font-size:8px;letter-spacing:.13em}.subpage-footer a{display:flex;align-items:center;gap:8px;color:var(--gold)}
 @media(max-width:800px){.subpage-hero{grid-template-columns:1fr;padding:60px 7%;gap:38px}.subpage-photo{height:300px}.subpage-content{padding:60px 7%}.subpage-contact{grid-template-columns:1fr;padding:25px}.subpage-panels{grid-template-columns:1fr}}
 @media(max-width:480px){.subpage-topline{font-size:7px}.subpage-header{height:72px;padding:0 6%}.subpage-back{font-size:8px}.subpage-copy h1{font-size:52px}.subpage-photo{height:245px}.subpage-footer{flex-wrap:wrap;line-height:1.7}.subpage-footer span:last-of-type{display:none}}
+
+
+/* Reference-led Imperia homepage hero — asymmetric white panel, curved photo edge, floating booking strip */
+.hero-reference{height:760px;min-height:760px;background:#eeeae2;color:#242820;overflow:hidden;isolation:isolate}
+.hero-reference:before{display:none}
+.hero-reference .reference-photo{position:absolute;inset:0 0 0 39%;z-index:0;overflow:hidden;background:#c9c2b5}
+.reference-photo-shade{position:absolute;inset:48% 0 0;background:linear-gradient(transparent,rgba(15,22,17,.62));pointer-events:none}
+.reference-photo-caption{position:absolute;right:6%;bottom:100px;z-index:2;display:flex;flex-direction:column;gap:8px;color:#fff;text-align:right}
+.reference-photo-caption span{font-size:8px;letter-spacing:.2em;color:#f0dcb8}
+.reference-photo-caption strong{font:25px 'Playfair Display',Georgia,serif;font-weight:400}
+.reference-white-panel{position:absolute;inset:0 auto 0 0;width:68%;z-index:1;background:#f7f5ef;border-radius:0 48% 48% 0 / 0 55% 55% 0;box-shadow:24px 0 55px rgba(25,28,22,.08);padding:0 0 0 5.2%}
+.reference-topline{height:34px;display:flex;align-items:center;justify-content:space-between;padding-right:17%;color:#827b6d;font-size:8px;letter-spacing:.18em}
+.reference-nav{height:88px;display:flex;align-items:center;justify-content:space-between;padding-right:15%}
+.reference-nav .wordmark-text{color:#252920}
+.reference-links{display:flex;align-items:center;gap:clamp(14px,2vw,30px)}
+.reference-links a{font-size:8px;font-weight:700;letter-spacing:.13em;color:#60645a}
+.reference-links a:hover{color:#a52e2e}
+.reference-menu{display:none}
+.reference-copy{position:relative;margin:90px 0 0 5.2%;max-width:470px}
+.reference-copy .eyebrow{margin-bottom:22px}
+.reference-copy h1{margin:0;color:#292b25;font:400 clamp(58px,6.4vw,88px)/.98 'Playfair Display',Georgia,serif;letter-spacing:-.055em}
+.reference-copy h1 em{color:#a52e2e;font-weight:400}
+.reference-intro{max-width:345px;margin:22px 0 24px;color:#686b61;font-size:12px;line-height:1.85}
+.reference-cta{display:inline-flex;align-items:center;gap:13px;padding:15px 19px;background:#a52e2e;color:#fff;font-size:8px;font-weight:700;letter-spacing:.16em}
+.reference-bottom-note{position:absolute;left:10.2%;bottom:34px;right:18%;display:flex;justify-content:space-between;color:#858174;font-size:7px;letter-spacing:.15em}
+.reference-booking{position:absolute;z-index:4;left:15%;right:8%;bottom:30px;min-height:92px;padding:15px 17px;background:#fff;box-shadow:0 15px 45px rgba(24,28,22,.16);display:grid;grid-template-columns:1.05fr 1fr 1fr .95fr 1.35fr;align-items:center;gap:12px}
+.reference-booking-heading{font:17px 'Playfair Display',Georgia,serif;color:#2a2b25}
+.reference-booking-field{min-height:43px;padding-left:13px;border-left:1px solid #e7e2d8;display:flex;flex-direction:column;justify-content:center;gap:7px}
+.reference-booking-field span{font-size:7px;letter-spacing:.15em;color:#9b8a70}
+.reference-booking-field strong{font-size:10px;font-weight:500;color:#45483f}
+.reference-availability{min-height:48px;padding:0 12px;display:flex;align-items:center;justify-content:center;gap:9px;background:#a52e2e;color:white;font-size:8px;font-weight:700;letter-spacing:.1em;white-space:nowrap}
+@media(max-width:1000px){.reference-white-panel{width:73%}.reference-links{gap:13px}.reference-links a{font-size:7px}.reference-copy{margin-top:100px}.reference-booking{left:7%;right:7%;grid-template-columns:1fr 1fr 1fr 1fr}.reference-booking-heading{display:none}}
+@media(max-width:850px){.hero-reference{height:850px;min-height:850px}.hero-reference .reference-photo{inset:0 0 0 0}.reference-photo-shade{inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 15%,rgba(0,0,0,.05) 40%,rgba(0,0,0,.55) 100%)}.reference-photo-caption{display:none}.reference-white-panel{inset:0 0 auto 0;width:100%;height:570px;border-radius:0 0 46% 0 / 0 0 12% 0;padding:0 6%;box-shadow:0 20px 45px rgba(0,0,0,.08)}.reference-topline{padding:0;height:30px;font-size:7px}.reference-nav{height:72px;padding:0}.reference-links{display:none}.reference-menu{display:block;color:#34372e}.reference-copy{margin:55px 0 0 3%;max-width:420px}.reference-copy h1{font-size:clamp(58px,11vw,78px)}.reference-intro{max-width:310px}.reference-bottom-note{display:none}.reference-booking{left:6%;right:6%;bottom:22px;padding:16px;grid-template-columns:1fr 1fr;gap:14px}.reference-booking-heading{display:block;grid-column:1/-1}.reference-booking-field{min-height:38px}.reference-availability{grid-column:1/-1}.reference-booking-field:nth-of-type(4){border-left:0;padding-left:0}}
+@media(max-width:420px){.hero-reference{height:900px;min-height:900px}.reference-white-panel{height:595px}.reference-copy{margin-top:48px}.reference-copy h1{font-size:59px}.reference-intro{font-size:11px;max-width:285px}.reference-booking{bottom:18px;gap:11px}.reference-booking-heading{font-size:16px}}
