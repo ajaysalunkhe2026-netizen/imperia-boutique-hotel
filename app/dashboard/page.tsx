@@ -5,7 +5,7 @@ import {
   CircleDollarSign, Clock3, LayoutDashboard, LogOut, Users,
 } from "lucide-react";
 import { resolvePrincipal } from "@/lib/authz/resolve-principal";
-import { authorize } from "@/lib/authz/policy.mjs";
+import { authorize } from "@/lib/authz/policy";
 
 export const dynamic = "force-dynamic";
 
