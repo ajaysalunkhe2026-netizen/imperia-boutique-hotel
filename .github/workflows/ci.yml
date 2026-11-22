@@ -27,6 +27,8 @@ jobs:
         run: npm run typecheck
       - name: Production build
         run: npm run build
+      - name: Authorization policy tests
+        run: node --test lib/authz/*.test.mjs
 
   database:
     runs-on: ubuntu-latest
