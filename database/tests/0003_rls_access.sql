@@ -189,7 +189,7 @@ RESET ROLE;
 -- Authenticated users get SELECT only on approved tables; anonymous users
 -- get no application-table access. Webhook events and admin assignments are
 -- never exposed directly to either API role.
-DO $
+DO $$
 DECLARE
   table_name text;
   write_privilege text;
