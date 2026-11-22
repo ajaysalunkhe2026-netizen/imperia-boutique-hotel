@@ -188,7 +188,7 @@ BEGIN
     );
 
   EXCEPTION
-    WHEN raise_exception THEN
+    WHEN check_violation THEN
       IF SQLERRM =
         'Room allocation dates must be within reservation dates'
       THEN
