@@ -1,4 +1,4 @@
-name: Website CI
+name: Website and Database CI
 
 on:
   push:
@@ -27,3 +27,40 @@ jobs:
         run: npm run typecheck
       - name: Production build
         run: npm run build
+      - name: Authorization policy tests
+        run: node --test lib/authz/*.test.mjs
+
+  database:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: imperia_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d imperia_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      PGHOST: localhost
+      PGPORT: 5432
+      PGDATABASE: imperia_test
+      PGUSER: postgres
+      PGPASSWORD: postgres
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes postgresql-client
+      - name: Apply database migration
+        run: psql -v ON_ERROR_STOP=1 -f database/migrations/0001_initial_schema.sql
+      - name: Apply authentication identity migration
+        run: psql -v ON_ERROR_STOP=1 -f database/migrations/0002_auth_identity_and_platform_admin.sql
+      - name: Run database integrity smoke tests
+        run: psql -v ON_ERROR_STOP=1 -f database/tests/0001_constraints.sql
