@@ -131,7 +131,7 @@ RESET ROLE;
 -- Manager: operational reservation/guest access, no raw payment table access.
 SELECT set_config('request.jwt.claim.sub', current_setting('test.manager_auth_id'), true);
 SET LOCAL ROLE authenticated;
-DO $
+DO $$
 DECLARE n bigint;
 BEGIN
   SELECT count(*) INTO n FROM public.reservations;
@@ -159,7 +159,7 @@ RESET ROLE;
 -- Platform Admin: no raw reservations or guest profiles and no payment grant.
 SELECT set_config('request.jwt.claim.sub', current_setting('test.admin_auth_id'), true);
 SET LOCAL ROLE authenticated;
-DO $
+DO $$
 DECLARE n bigint;
 BEGIN
   SELECT count(*) INTO n FROM public.reservations;
