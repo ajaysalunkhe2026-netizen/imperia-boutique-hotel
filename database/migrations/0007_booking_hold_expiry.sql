@@ -9,7 +9,7 @@ SECURITY DEFINER
 SET search_path = ''
 AS $$
 DECLARE
-  v_expired_count integer;
+  v_expired_count integer := 0;
 BEGIN
   IF p_batch_size IS NULL OR p_batch_size < 1 OR p_batch_size > 1000 THEN
     RAISE EXCEPTION 'Invalid expiry batch size' USING ERRCODE = '22023';
@@ -30,10 +30,10 @@ BEGIN
   FROM expired
   WHERE r.id = expired.id
     AND r.status = 'HELD'
-  RETURNING r.id
-  INTO v_expired_count;
+  ;
 
-  RETURN COALESCE(v_expired_count, 0);
+  GET DIAGNOSTICS v_expired_count = ROW_COUNT;
+  RETURN v_expired_count;
 END;
 $$;
 
