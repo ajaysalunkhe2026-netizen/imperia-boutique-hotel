@@ -3,6 +3,8 @@ export interface Principal {
   userId: string;
   active: boolean;
   verified: boolean;
+  /** Resolved server-side from an active platform_admin_assignments row. */
+  isPlatformAdmin: boolean;
   memberships: Array<{ propertyId: string; role: AppRole; active: boolean }>;
 }
 export interface AuthorizationInput {
