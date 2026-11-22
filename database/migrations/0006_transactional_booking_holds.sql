@@ -116,8 +116,8 @@ BEGIN
         AND ra.check_out > p_check_in
     )
   ORDER BY rm.room_number
-  FOR UPDATE OF rm SKIP LOCKED
-  LIMIT 1;
+  LIMIT 1
+  FOR UPDATE OF rm SKIP LOCKED;
 
   IF v_room_id IS NULL THEN
     RAISE EXCEPTION 'No room available for requested dates'
