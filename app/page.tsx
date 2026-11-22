@@ -140,13 +140,17 @@ export default function Home() {
       <section className="enquire section" id="enquire">
         <div className="enquire-mark"><Sparkles /></div><p className="eyebrow eyebrow-dark">YOUR STAY STARTS WITH A HELLO</p>
         <h2>Let’s make your<br /><em>visit happen.</em></h2>
-        <p>For room availability, current tariffs and reservation assistance, please use the hotel’s verified booking channel or contact the property directly.</p>
+        <p>For room availability, current tariffs and reservation assistance, contact Imperia Boutique Hotel directly.</p>
+        <div className="contact-details">
+          <div className="contact-detail"><span>CALL / WHATSAPP</span><a href="tel:+918369011041">+91 83690 11041</a><a href="https://wa.me/918369011041" target="_blank" rel="noreferrer">Message on WhatsApp <ArrowUpRight size={13} /></a></div>
+          <div className="contact-detail"><span>CALL / WHATSAPP</span><a href="tel:+917700003843">+91 77000 03843</a><a href="https://wa.me/917700003843" target="_blank" rel="noreferrer">Message on WhatsApp <ArrowUpRight size={13} /></a></div>
+          <div className="contact-detail"><span>EMAIL</span><a href="mailto:imperiaboutiquehotel@gmail.com">imperiaboutiquehotel@gmail.com</a></div>
+        </div>
         <Link className="button button-dark" href={mmtUrl} target="_blank">VIEW BOOKING LISTING <ArrowUpRight size={15} /></Link>
-        <small>Direct phone and WhatsApp details will be added after confirmation by the hotel.</small>
       </section>
 
       <footer className="footer">
-        <div className="footer-main"><Link href="#top" className="wordmark footer-wordmark"><span className="monogram">I<span>.</span></span><span className="wordmark-text">IMPERIA<small>BOUTIQUE HOTEL</small></span></Link><p>A welcoming address<br />in Rabale, Navi Mumbai.</p><Link href="#top" className="back-top">BACK TO TOP ↑</Link></div>
+        <div className="footer-main"><Link href="#top" className="wordmark footer-wordmark"><span className="monogram">I<span>.</span></span><span className="wordmark-text">IMPERIA<small>BOUTIQUE HOTEL</small></span></Link><p>A welcoming address<br />in Rabale, Navi Mumbai.</p><div className="footer-contact"><a href="tel:+918369011041">83690 11041</a><a href="tel:+917700003843">77000 03843</a><a href="mailto:imperiaboutiquehotel@gmail.com">Email the hotel</a></div><Link href="#top" className="back-top">BACK TO TOP ↑</Link></div>
         <div className="footer-bottom"><span>© {new Date().getFullYear()} IMPERIA BOUTIQUE HOTEL</span><span>RABALE · NAVI MUMBAI · INDIA</span><span>MADE TO WELCOME</span></div>
       </footer>
     </main>
