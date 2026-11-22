@@ -131,18 +131,15 @@ RESET ROLE;
 -- Manager: operational reservation/guest access, no raw payment table access.
 SELECT set_config('request.jwt.claim.sub', current_setting('test.manager_auth_id'), true);
 SET LOCAL ROLE authenticated;
-DO $$
-DECLARE n bigint; denied boolean := false;
+DO $
+DECLARE n bigint;
 BEGIN
   SELECT count(*) INTO n FROM public.reservations;
   IF n <> 1 THEN RAISE EXCEPTION 'RLS TEST FAILED: manager reservation visibility: %', n; END IF;
-  BEGIN
-    EXECUTE 'SELECT count(*) FROM public.payments';
-  EXCEPTION WHEN insufficient_privilege THEN denied := true;
-  END;
-  IF NOT denied THEN RAISE EXCEPTION 'RLS TEST FAILED: manager has raw payment access'; END IF;
+  SELECT count(*) INTO n FROM public.payments;
+  IF n <> 0 THEN RAISE EXCEPTION 'RLS TEST FAILED: manager sees raw payment rows: %', n; END IF;
 END;
-$$;
+$;
 RESET ROLE;
 
 -- Guest: sees only own reservation and own guest profile.
@@ -162,20 +159,17 @@ RESET ROLE;
 -- Platform Admin: no raw reservations or guest profiles and no payment grant.
 SELECT set_config('request.jwt.claim.sub', current_setting('test.admin_auth_id'), true);
 SET LOCAL ROLE authenticated;
-DO $$
-DECLARE n bigint; denied boolean := false;
+DO $
+DECLARE n bigint;
 BEGIN
   SELECT count(*) INTO n FROM public.reservations;
   IF n <> 0 THEN RAISE EXCEPTION 'RLS TEST FAILED: Platform Admin sees raw reservations'; END IF;
   SELECT count(*) INTO n FROM public.guests;
   IF n <> 0 THEN RAISE EXCEPTION 'RLS TEST FAILED: Platform Admin sees guest profiles'; END IF;
-  BEGIN
-    EXECUTE 'SELECT count(*) FROM public.payments';
-  EXCEPTION WHEN insufficient_privilege THEN denied := true;
-  END;
-  IF NOT denied THEN RAISE EXCEPTION 'RLS TEST FAILED: Platform Admin has raw payment access'; END IF;
+  SELECT count(*) INTO n FROM public.payments;
+  IF n <> 0 THEN RAISE EXCEPTION 'RLS TEST FAILED: Platform Admin sees raw payment rows: %', n; END IF;
 END;
-$$;
+$;
 RESET ROLE;
 
 -- Unmapped identity: no application data is visible.
