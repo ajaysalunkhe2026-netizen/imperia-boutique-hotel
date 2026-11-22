@@ -60,5 +60,5 @@ jobs:
           sudo apt-get install --yes postgresql-client
       - name: Apply database migration
         run: psql -v ON_ERROR_STOP=1 -f database/migrations/0001_initial_schema.sql
-      - name: Run database integrity smoke tests
+      - name: Apply authentication identity migration\n        run: psql -v ON_ERROR_STOP=1 -f database/migrations/0002_auth_identity_and_platform_admin.sql\n      - name: Run database integrity smoke tests
         run: psql -v ON_ERROR_STOP=1 -f database/tests/0001_constraints.sql
