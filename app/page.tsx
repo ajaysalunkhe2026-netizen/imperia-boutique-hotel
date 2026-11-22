@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowDown, ArrowRight, ArrowUpRight, BedDouble, Check, Clock3,
   Coffee, MapPin, Menu, Sparkles, Wifi, Wind, Droplets, ConciergeBell,
@@ -68,7 +69,7 @@ export default function Home() {
             <Link className="button button-quiet" href="#location">DISCOVER OUR LOCATION <ArrowDown size={15} /></Link>
           </div>
         </div>
-        <div className="hero-photo-frame"><PhotoPending number="01 / IMPERIA" title="A place to arrive" wide /></div>
+        <div className="hero-photo-frame hero-real-photo"><Image src="/images/imperia-hotel-exterior.jpg" alt="Imperia Boutique Hotel exterior in Rabale, Navi Mumbai" fill priority sizes="(max-width: 850px) 86vw, 36vw" style={{ objectFit: "cover", objectPosition: "center 58%" }} /><div className="hero-photo-caption"><span>THE REAL IMPERIA</span><strong>Welcome to Rabale.</strong></div></div>
         <div className="hero-foot"><span>THOUGHTFULLY LOCATED IN RABALE</span><span>SCROLL TO DISCOVER ↓</span></div>
       </section>
 
