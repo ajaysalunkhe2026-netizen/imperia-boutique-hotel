@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 
 const siteUrl = "https://imperiaboutiquehotel.in";
 
@@ -35,10 +36,14 @@ const hotelStructuredData = {
   "@type": "Hotel",
   name: "Imperia Boutique Hotel",
   url: siteUrl,
+  telephone: ["+91 83690 11041", "+91 77000 03843"],
+  email: "imperiaboutiquehotel@gmail.com",
   address: {
     "@type": "PostalAddress",
-    addressLocality: "Rabale",
+    streetAddress: "Plot No. P-52, TTC Industrial Area, Rabale Naka, Thane–Belapur Road",
+    addressLocality: "Navi Mumbai",
     addressRegion: "Maharashtra",
+    postalCode: "400701",
     addressCountry: "IN",
   },
 };
@@ -52,6 +57,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           dangerouslySetInnerHTML={{ __html: JSON.stringify(hotelStructuredData) }}
         />
         {children}
+        <Analytics />
       </body>
     </html>
   );

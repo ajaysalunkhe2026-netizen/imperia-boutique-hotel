@@ -43,34 +43,53 @@ export default function Home() {
           <span className="wordmark-text">IMPERIA<small>BOUTIQUE HOTEL</small></span>
         </Link>
         <nav className="nav" aria-label="Main navigation">
-          <Link href="#hotel">THE HOTEL</Link>
-          <Link href="#rooms">ROOMS & SUITES</Link>
-          <Link href="#amenities">AMENITIES</Link>
-          <Link href="#location">LOCATION</Link>
+          <Link href="/hotel">THE HOTEL</Link>
+          <Link href="/rooms">ROOMS</Link>
+          <Link href="/dining">DINING</Link>
+          <Link href="/contact">CONTACT</Link>
         </nav>
         <Link className="header-cta" href="#enquire">ENQUIRE NOW <ArrowUpRight size={15} /></Link>
         <Link className="mobile-menu" href="#mobile-nav" aria-label="Open navigation"><Menu /></Link>
       </header>
       <nav id="mobile-nav" className="mobile-nav" aria-label="Mobile navigation">
-        <Link href="#hotel">The Hotel</Link><Link href="#rooms">Rooms & Suites</Link>
-        <Link href="#amenities">Amenities</Link><Link href="#location">Location</Link>
-        <Link href="#enquire">Enquire</Link>
+        <Link href="/hotel">The Hotel</Link><Link href="/rooms">Rooms & Suites</Link>
+        <Link href="/dining">Dining</Link><Link href="/experiences">Experiences</Link>
+        <Link href="/offers">Offers</Link><Link href="/contact">Contact</Link><Link href="/booking">Booking enquiry</Link>
       </nav>
 
-      <section className="hero">
-        <div className="hero-shape hero-shape-one" /><div className="hero-shape hero-shape-two" />
-        <div className="hero-meta"><span>EST. IN RABALE</span><span>NAVI MUMBAI · MAHARASHTRA</span></div>
-        <div className="hero-copy">
-          <p className="eyebrow"><span /> YOUR CITY, YOUR MOMENT</p>
-          <h1>Arrive.<br /><em>Unwind.</em><br />Feel at home.</h1>
-          <p className="hero-intro">A considered stay in Rabale, Navi Mumbai. Find a welcoming place to pause, refresh and make the most of your time in the city.</p>
-          <div className="hero-actions">
-            <Link className="button button-gold" href="#rooms">EXPLORE ROOMS <ArrowUpRight size={15} /></Link>
-            <Link className="button button-quiet" href="#location">DISCOVER OUR LOCATION <ArrowDown size={15} /></Link>
-          </div>
+      <section className="hero hero-reference">
+        <div className="reference-photo">
+          <Image src="/images/imperia-hotel-exterior.jpg" alt="Imperia Boutique Hotel in Rabale, Navi Mumbai" fill priority sizes="(max-width: 850px) 100vw, 58vw" style={{ objectFit: "cover", objectPosition: "center 55%" }} />
+          <div className="reference-photo-shade" />
+          <div className="reference-photo-caption"><span>IMPERIA BOUTIQUE HOTEL</span><strong>A welcoming address in Rabale.</strong></div>
         </div>
-        <div className="hero-photo-frame hero-real-photo"><Image src="/images/imperia-hotel-exterior.jpg" alt="Imperia Boutique Hotel exterior in Rabale, Navi Mumbai" fill priority sizes="(max-width: 850px) 86vw, 36vw" style={{ objectFit: "cover", objectPosition: "center 58%" }} /><div className="hero-photo-caption"><span>THE REAL IMPERIA</span><strong>Welcome to Rabale.</strong></div></div>
-        <div className="hero-foot"><span>THOUGHTFULLY LOCATED IN RABALE</span><span>SCROLL TO DISCOVER ↓</span></div>
+        <div className="reference-white-panel">
+          <div className="reference-topline"><span>RABALE · NAVI MUMBAI</span><span>WELCOME TO IMPERIA</span></div>
+          <div className="reference-nav">
+            <Link href="#top" className="wordmark" aria-label="Imperia Boutique Hotel home">
+              <span className="monogram">I<span>.</span></span>
+              <span className="wordmark-text">IMPERIA<small>BOUTIQUE HOTEL</small></span>
+            </Link>
+            <nav className="reference-links" aria-label="Main navigation">
+              <Link href="/hotel">THE HOTEL</Link><Link href="/rooms">ROOMS</Link><Link href="/dining">DINING</Link><Link href="/contact">CONTACT</Link>
+            </nav>
+            <Link className="reference-menu" href="#mobile-nav" aria-label="Open navigation"><Menu size={20}/></Link>
+          </div>
+          <div className="reference-copy">
+            <p className="eyebrow eyebrow-dark"><span/> YOUR CITY, YOUR MOMENT</p>
+            <h1>Arrive.<br/><em>Unwind.</em><br/>Feel at home.</h1>
+            <p className="reference-intro">A considered stay in Rabale, Navi Mumbai. Find a welcoming place to pause, refresh and make the most of your time in the city.</p>
+            <Link className="reference-cta" href="/booking">BOOK YOUR STAY <ArrowUpRight size={15}/></Link>
+          </div>
+          <div className="reference-bottom-note"><span>THOUGHTFULLY LOCATED IN RABALE</span><span>DISCOVER IMPERIA ↓</span></div>
+        </div>
+        <div className="reference-booking" id="booking-bar">
+          <div className="reference-booking-heading">PLAN YOUR STAY</div>
+          <div className="reference-booking-field"><span>CHECK-IN</span><strong>Choose your date</strong></div>
+          <div className="reference-booking-field"><span>CHECK-OUT</span><strong>Choose your date</strong></div>
+          <div className="reference-booking-field"><span>GUESTS</span><strong>Enquire with us</strong></div>
+          <Link href="/booking" className="reference-availability">CHECK AVAILABILITY <ArrowUpRight size={14}/></Link>
+        </div>
       </section>
 
       <section className="intro section" id="hotel">
@@ -140,13 +159,17 @@ export default function Home() {
       <section className="enquire section" id="enquire">
         <div className="enquire-mark"><Sparkles /></div><p className="eyebrow eyebrow-dark">YOUR STAY STARTS WITH A HELLO</p>
         <h2>Let’s make your<br /><em>visit happen.</em></h2>
-        <p>For room availability, current tariffs and reservation assistance, please use the hotel’s verified booking channel or contact the property directly.</p>
+        <p>For room availability, current tariffs and reservation assistance, contact Imperia Boutique Hotel directly.</p>
+        <div className="contact-details">
+          <div className="contact-detail"><span>CALL / WHATSAPP</span><a href="tel:+918369011041">+91 83690 11041</a><a href="https://wa.me/918369011041" target="_blank" rel="noreferrer">Message on WhatsApp <ArrowUpRight size={13} /></a></div>
+          <div className="contact-detail"><span>CALL / WHATSAPP</span><a href="tel:+917700003843">+91 77000 03843</a><a href="https://wa.me/917700003843" target="_blank" rel="noreferrer">Message on WhatsApp <ArrowUpRight size={13} /></a></div>
+          <div className="contact-detail"><span>EMAIL</span><a href="mailto:imperiaboutiquehotel@gmail.com">imperiaboutiquehotel@gmail.com</a></div>
+        </div>
         <Link className="button button-dark" href={mmtUrl} target="_blank">VIEW BOOKING LISTING <ArrowUpRight size={15} /></Link>
-        <small>Direct phone and WhatsApp details will be added after confirmation by the hotel.</small>
       </section>
 
       <footer className="footer">
-        <div className="footer-main"><Link href="#top" className="wordmark footer-wordmark"><span className="monogram">I<span>.</span></span><span className="wordmark-text">IMPERIA<small>BOUTIQUE HOTEL</small></span></Link><p>A welcoming address<br />in Rabale, Navi Mumbai.</p><Link href="#top" className="back-top">BACK TO TOP ↑</Link></div>
+        <div className="footer-main"><Link href="#top" className="wordmark footer-wordmark"><span className="monogram">I<span>.</span></span><span className="wordmark-text">IMPERIA<small>BOUTIQUE HOTEL</small></span></Link><p>A welcoming address<br />in Rabale, Navi Mumbai.</p><div className="footer-contact"><a href="tel:+918369011041">83690 11041</a><a href="tel:+917700003843">77000 03843</a><a href="mailto:imperiaboutiquehotel@gmail.com">Email the hotel</a></div><Link href="#top" className="back-top">BACK TO TOP ↑</Link></div>
         <div className="footer-bottom"><span>© {new Date().getFullYear()} IMPERIA BOUTIQUE HOTEL</span><span>RABALE · NAVI MUMBAI · INDIA</span><span>MADE TO WELCOME</span></div>
       </footer>
     </main>
