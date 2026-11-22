@@ -57,20 +57,39 @@ export default function Home() {
         <Link href="/offers">Offers</Link><Link href="/contact">Contact</Link><Link href="/booking">Booking enquiry</Link>
       </nav>
 
-      <section className="hero">
-        <div className="hero-shape hero-shape-one" /><div className="hero-shape hero-shape-two" />
-        <div className="hero-meta"><span>EST. IN RABALE</span><span>NAVI MUMBAI · MAHARASHTRA</span></div>
-        <div className="hero-copy">
-          <p className="eyebrow"><span /> YOUR CITY, YOUR MOMENT</p>
-          <h1>Arrive.<br /><em>Unwind.</em><br />Feel at home.</h1>
-          <p className="hero-intro">A considered stay in Rabale, Navi Mumbai. Find a welcoming place to pause, refresh and make the most of your time in the city.</p>
-          <div className="hero-actions">
-            <Link className="button button-gold" href="#rooms">EXPLORE ROOMS <ArrowUpRight size={15} /></Link>
-            <Link className="button button-quiet" href="#location">DISCOVER OUR LOCATION <ArrowDown size={15} /></Link>
-          </div>
+      <section className="hero hero-reference">
+        <div className="reference-photo">
+          <Image src="/images/imperia-hotel-exterior.jpg" alt="Imperia Boutique Hotel in Rabale, Navi Mumbai" fill priority sizes="(max-width: 850px) 100vw, 58vw" style={{ objectFit: "cover", objectPosition: "center 55%" }} />
+          <div className="reference-photo-shade" />
+          <div className="reference-photo-caption"><span>IMPERIA BOUTIQUE HOTEL</span><strong>A welcoming address in Rabale.</strong></div>
         </div>
-        <div className="hero-photo-frame hero-real-photo"><Image src="/images/imperia-hotel-exterior.jpg" alt="Imperia Boutique Hotel exterior in Rabale, Navi Mumbai" fill priority sizes="(max-width: 850px) 86vw, 36vw" style={{ objectFit: "cover", objectPosition: "center 58%" }} /><div className="hero-photo-caption"><span>THE REAL IMPERIA</span><strong>Welcome to Rabale.</strong></div></div>
-        <div className="hero-foot"><span>THOUGHTFULLY LOCATED IN RABALE</span><span>SCROLL TO DISCOVER ↓</span></div>
+        <div className="reference-white-panel">
+          <div className="reference-topline"><span>RABALE · NAVI MUMBAI</span><span>WELCOME TO IMPERIA</span></div>
+          <div className="reference-nav">
+            <Link href="#top" className="wordmark" aria-label="Imperia Boutique Hotel home">
+              <span className="monogram">I<span>.</span></span>
+              <span className="wordmark-text">IMPERIA<small>BOUTIQUE HOTEL</small></span>
+            </Link>
+            <nav className="reference-links" aria-label="Main navigation">
+              <Link href="/hotel">THE HOTEL</Link><Link href="/rooms">ROOMS</Link><Link href="/dining">DINING</Link><Link href="/contact">CONTACT</Link>
+            </nav>
+            <Link className="reference-menu" href="#mobile-nav" aria-label="Open navigation"><Menu size={20}/></Link>
+          </div>
+          <div className="reference-copy">
+            <p className="eyebrow eyebrow-dark"><span/> YOUR CITY, YOUR MOMENT</p>
+            <h1>Arrive.<br/><em>Unwind.</em><br/>Feel at home.</h1>
+            <p className="reference-intro">A considered stay in Rabale, Navi Mumbai. Find a welcoming place to pause, refresh and make the most of your time in the city.</p>
+            <Link className="reference-cta" href="/booking">BOOK YOUR STAY <ArrowUpRight size={15}/></Link>
+          </div>
+          <div className="reference-bottom-note"><span>THOUGHTFULLY LOCATED IN RABALE</span><span>DISCOVER IMPERIA ↓</span></div>
+        </div>
+        <div className="reference-booking" id="booking-bar">
+          <div className="reference-booking-heading">PLAN YOUR STAY</div>
+          <div className="reference-booking-field"><span>CHECK-IN</span><strong>Choose your date</strong></div>
+          <div className="reference-booking-field"><span>CHECK-OUT</span><strong>Choose your date</strong></div>
+          <div className="reference-booking-field"><span>GUESTS</span><strong>Enquire with us</strong></div>
+          <Link href="/booking" className="reference-availability">CHECK AVAILABILITY <ArrowUpRight size={14}/></Link>
+        </div>
       </section>
 
       <section className="intro section" id="hotel">
