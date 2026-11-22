@@ -139,7 +139,7 @@ BEGIN
   SELECT count(*) INTO n FROM public.payments;
   IF n <> 0 THEN RAISE EXCEPTION 'RLS TEST FAILED: manager sees raw payment rows: %', n; END IF;
 END;
-$;
+$$;
 RESET ROLE;
 
 -- Guest: sees only own reservation and own guest profile.
@@ -169,7 +169,7 @@ BEGIN
   SELECT count(*) INTO n FROM public.payments;
   IF n <> 0 THEN RAISE EXCEPTION 'RLS TEST FAILED: Platform Admin sees raw payment rows: %', n; END IF;
 END;
-$;
+$$;
 RESET ROLE;
 
 -- Unmapped identity: no application data is visible.
