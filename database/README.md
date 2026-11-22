@@ -56,6 +56,7 @@ The SQL test files wrap fixtures in transactions and roll them back. Never point
 - The server admin client bypasses RLS. It is only a trusted backend building block, not a substitute for per-request authorization.
 - No booking API, payment gateway, webhook endpoint, trusted expiry worker, reporting views/RPCs or commission ledger is implemented yet.
 - No Platform Admin provisioning function exists. Assignment creation must remain a trusted, audited operator workflow.
-- Migration 0005 implements authenticated SELECT policies for hotel staff, guest-owned records and self identity. Owner/Manager/Guest write policies are intentionally not enabled; trusted server workflows are still required.
+- Migration 0005 implements authenticated SELECT policies for hotel staff, guest-owned records and self identity. Its SECURITY DEFINER authorization helpers live in the non-default `private` schema, not the PostgREST-exposed `public` schema. Keep `private` out of Supabase API exposed schemas. Owner/Manager/Guest write policies are intentionally not enabled; trusted server workflows are still required.
+- The RLS regression suite checks row visibility and table privileges: anonymous table access is denied, authenticated roles have no direct write privileges, and webhook/admin-assignment tables are not directly readable.
 - The proposed 15% gross commission remains pending written hotel-owner approval and a precise gross-revenue/refund definition.
 - Migrations are source code only until explicitly applied and verified against the intended development project.

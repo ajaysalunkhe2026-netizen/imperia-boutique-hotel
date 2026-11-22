@@ -45,3 +45,8 @@ Copy `.env.example` to `.env.local` only after selecting the intended developmen
 ## Next implementation gate
 
 Build the invitation/provisioning flow, protected dashboard routes and narrowly scoped data-access layer. Add reporting views/RPCs that return aggregates only, then implement granular RLS policies with tests. Run CI and staging security tests before enabling real accounts or booking data.
+
+
+## Database RLS helper exposure
+
+The authorization helper functions used by RLS policies are installed in the PostgreSQL `private` schema, not `public`. Keep `private` excluded from Supabase project's API > Exposed schemas. The authenticated role receives only the schema/function privileges needed for policy evaluation; these helper functions are not intended as public PostgREST RPC endpoints. Do not add `private` to exposed schemas as a convenience.

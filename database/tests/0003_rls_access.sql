@@ -184,4 +184,45 @@ END;
 $$;
 RESET ROLE;
 
+
+-- Table-level privileges are part of the boundary, not just row policies.
+-- Authenticated users get SELECT only on approved tables; anonymous users
+-- get no application-table access. Webhook events and admin assignments are
+-- never exposed directly to either API role.
+DO $
+DECLARE
+  table_name text;
+  write_privilege text;
+  protected_tables text[] := ARRAY[
+    'properties', 'app_users', 'property_memberships', 'guests',
+    'room_categories', 'rooms', 'reservations', 'room_allocations',
+    'payments', 'payment_webhook_events', 'audit_logs',
+    'platform_admin_assignments'
+  ];
+BEGIN
+  FOREACH table_name IN ARRAY protected_tables LOOP
+    IF has_table_privilege('anon', format('public.%I', table_name), 'SELECT') THEN
+      RAISE EXCEPTION 'RLS TEST FAILED: anon can SELECT public.%', table_name;
+    END IF;
+
+    FOREACH write_privilege IN ARRAY ARRAY['INSERT', 'UPDATE', 'DELETE', 'TRUNCATE', 'REFERENCES', 'TRIGGER'] LOOP
+      IF has_table_privilege('authenticated', format('public.%I', table_name), write_privilege) THEN
+        RAISE EXCEPTION 'RLS TEST FAILED: authenticated has % on public.%', write_privilege, table_name;
+      END IF;
+      IF has_table_privilege('anon', format('public.%I', table_name), write_privilege) THEN
+        RAISE EXCEPTION 'RLS TEST FAILED: anon has % on public.%', write_privilege, table_name;
+      END IF;
+    END LOOP;
+  END LOOP;
+
+  IF has_table_privilege('authenticated', 'public.payment_webhook_events', 'SELECT') THEN
+    RAISE EXCEPTION 'RLS TEST FAILED: authenticated can read webhook events';
+  END IF;
+  IF has_table_privilege('authenticated', 'public.platform_admin_assignments', 'SELECT') THEN
+    RAISE EXCEPTION 'RLS TEST FAILED: authenticated can read admin assignment history';
+  END IF;
+  RAISE NOTICE 'PASS: anonymous denial, authenticated read-only grants, and protected internal tables.';
+END;
+$;
+
 ROLLBACK;
