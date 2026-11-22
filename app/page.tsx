@@ -47,6 +47,7 @@ export default function Home() {
           <Link href="#rooms">ROOMS & SUITES</Link>
           <Link href="#amenities">AMENITIES</Link>
           <Link href="#location">LOCATION</Link>
+          <Link href="/raj-sir">RAJ SIR</Link>
         </nav>
         <Link className="header-cta" href="#enquire">ENQUIRE NOW <ArrowUpRight size={15} /></Link>
         <Link className="mobile-menu" href="#mobile-nav" aria-label="Open navigation"><Menu /></Link>
@@ -54,7 +55,7 @@ export default function Home() {
       <nav id="mobile-nav" className="mobile-nav" aria-label="Mobile navigation">
         <Link href="#hotel">The Hotel</Link><Link href="#rooms">Rooms & Suites</Link>
         <Link href="#amenities">Amenities</Link><Link href="#location">Location</Link>
-        <Link href="#enquire">Enquire</Link>
+        <Link href="#enquire">Enquire</Link><Link href="/raj-sir">Raj Sir</Link>
       </nav>
 
       <section className="hero">
@@ -150,7 +151,7 @@ export default function Home() {
       </section>
 
       <footer className="footer">
-        <div className="footer-main"><Link href="#top" className="wordmark footer-wordmark"><span className="monogram">I<span>.</span></span><span className="wordmark-text">IMPERIA<small>BOUTIQUE HOTEL</small></span></Link><p>A welcoming address<br />in Rabale, Navi Mumbai.</p><div className="footer-contact"><a href="tel:+918369011041">83690 11041</a><a href="tel:+917700003843">77000 03843</a><a href="mailto:imperiaboutiquehotel@gmail.com">Email the hotel</a></div><Link href="#top" className="back-top">BACK TO TOP ↑</Link></div>
+        <div className="footer-main"><Link href="#top" className="wordmark footer-wordmark"><span className="monogram">I<span>.</span></span><span className="wordmark-text">IMPERIA<small>BOUTIQUE HOTEL</small></span></Link><p>A welcoming address<br />in Rabale, Navi Mumbai.</p><div className="footer-contact"><a href="/raj-sir">A note from Raj Sir</a><a href="tel:+918369011041">83690 11041</a><a href="tel:+917700003843">77000 03843</a><a href="mailto:imperiaboutiquehotel@gmail.com">Email the hotel</a></div><Link href="#top" className="back-top">BACK TO TOP ↑</Link></div>
         <div className="footer-bottom"><span>© {new Date().getFullYear()} IMPERIA BOUTIQUE HOTEL</span><span>RABALE · NAVI MUMBAI · INDIA</span><span>MADE TO WELCOME</span></div>
       </footer>
     </main>
