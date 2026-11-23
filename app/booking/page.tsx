@@ -69,6 +69,7 @@ export default function BookingPage() {
           <h1>Thank you.<br /><em>We’ll be in touch.</em></h1>
           <p>Your reservation enquiry has been received. This is a request only, not a confirmed booking. The hotel team must verify room availability and the applicable tariff before confirming your stay.</p>
           <div className="booking-reference"><span>REQUEST REFERENCE</span><strong>{result.reference}</strong></div>
+          <a className="booking-call" href="tel:+918369011041">CALL THE HOTEL · +91 83690 11041</a>
           <Link className="booking-submit" href="/">RETURN TO HOTEL <ArrowRight size={16} /></Link>
         </div>
       </main>
@@ -116,6 +117,12 @@ export default function BookingPage() {
           <div className="booking-notice"><ShieldCheck size={18} /><p><strong>Important:</strong> Submitting this form sends a reservation request only. Room availability, final tariff, taxes and inclusions will be confirmed by the hotel. No payment is collected on this page.</p></div>
           {error && <p className="booking-error" role="alert">{error}</p>}
           <button className="booking-submit" type="submit" disabled={busy || nights < 1 || nights > 30}>{busy ? "SENDING REQUEST…" : "SEND RESERVATION REQUEST"} <ArrowRight size={16} /></button>
+          <div className="booking-call-panel">
+            <strong>Prefer to speak with our team?</strong>
+            <span>Call the hotel directly for assistance.</span>
+            <a href="tel:+918369011041">+91 83690 11041</a>
+            <a href="tel:+917700003843">+91 77000 03843</a>
+          </div>
           <p className="booking-privacy">Your details will be used by the hotel to respond to this reservation enquiry.</p>
         </form>
       </div>
