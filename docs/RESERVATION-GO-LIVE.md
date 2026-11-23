@@ -1,51 +1,37 @@
-# Reservation Requests — Go-Live Runbook
+# Reservation Enquiries — WhatsApp / Call Flow
 
-This release adds a reservation enquiry workflow. It does **not** confirm bookings, reserve inventory, collect payments, or calculate tariffs.
+This implementation is a lightweight, no-custom-backend enquiry flow. It does not require a Supabase project, database migration, server-side reservation API, or notification-provider credentials.
 
-## Before enabling the form in production
+## Guest journey
 
-1. In the production Supabase project used by this Vercel deployment, apply:
-   `supabase/migrations/202611230001_create_reservation_requests.sql`.
-2. Confirm the Vercel Production environment has:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
-3. Configure reservation notification environment variables in Vercel:
-   - `RESEND_API_KEY`, `RESERVATION_FROM_EMAIL` (a sender/domain verified with Resend), and optionally `RESERVATION_NOTIFY_EMAIL` (defaults to the hotel's published email).
-   - For WhatsApp Cloud API: `WHATSAPP_CLOUD_ACCESS_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_NOTIFY_TO` (comma-separated E.164 digits for owner/manager), `WHATSAPP_TEMPLATE_NAME`, and optionally `WHATSAPP_TEMPLATE_LANGUAGE` (defaults to `en`).
-   - The approved WhatsApp template must be a utility template with five body placeholders in this order: request reference, guest name, stay dates/nights, guest/room summary, guest mobile.
-4. Redeploy only after the migration and provider settings are verified.
-5. Submit a controlled test enquiry using a hotel-approved test contact. Confirm one row is inserted into `public.reservation_requests` with `status = 'pending'`.
-6. Confirm the email arrives and the WhatsApp template is delivered to each configured recipient. Provider acceptance is not proof of end-device delivery.
-7. Delete the test row through an authorized Supabase operator workflow after verification.
+1. Guest selects dates, adults, children, room count and preferred room category.
+2. Guest enters their name and mobile number; email and special requests are optional.
+3. The page prepares a WhatsApp message from the entered details.
+4. The guest can edit the entire message or replace it with their own wording.
+5. The guest chooses one of the published hotel contact numbers. WhatsApp opens with the message prefilled; the guest must review it and press Send.
+6. Guests who prefer a phone call can use the direct Call links.
 
-## Guest-facing behavior
+## Important behavior and limitations
 
-- Guests select check-in/check-out dates, adults, children, rooms and a preferred room category.
-- The form collects lead-guest contact details and optional notes.
-- A successful submission returns a request reference.
-- The confirmation explicitly says this is an enquiry, not a confirmed reservation. Hotel staff must verify availability, tariff, taxes and inclusions.
+- WhatsApp links use the hotel's published contact numbers: +91 83690 11041 and +91 77000 03843. Confirm that both numbers are registered on WhatsApp before public launch.
+- A WhatsApp link opening successfully does not prove that a message was sent or delivered.
+- No enquiry is stored by the website. The hotel receives the details only after the guest sends the WhatsApp message or calls.
+- The form does not check live room inventory, calculate tariff/taxes, collect payment, or confirm a reservation.
+- Hotel staff must verify availability, final tariff, taxes and inclusions before confirming a stay.
+- Do not describe this as instant booking, a live booking engine, or an automatically recorded reservation system.
+- Guest-entered message content is user-controlled and is not submitted to a website API.
 
-## Operational controls and known limitations
+## Release verification
 
-- Public clients have INSERT-only RLS access; public SELECT/UPDATE/DELETE is not granted.
-- Do not expose the Supabase service-role key in browser code or public environment variables.
-- Email and WhatsApp Cloud API notifications are now supported when correctly configured. Notifications are best-effort after the enquiry is safely stored; provider failure does not discard the enquiry.
-- This release does not include a staff dashboard, staff login/roles, SMS, rate limiting, PMS/channel-manager integration, live inventory, tariff calculation or payment processing.
-- WhatsApp requires an approved Meta message template for business-initiated notifications. Do not attempt to send unapproved free-form messages.
-- Until staff access and notification delivery are implemented and tested, the hotel must monitor pending requests through an authorized Supabase operator workflow. Do not advertise instant booking confirmation.
-- Add edge/WAF rate limiting and abuse monitoring before promoting the form at scale.
+- [ ] Check both WhatsApp destination numbers are active WhatsApp accounts controlled by the hotel.
+- [ ] Test each WhatsApp link on Android and iPhone; confirm the prefilled message includes the entered booking details.
+- [ ] Edit the prefilled message and verify the edited text is retained when WhatsApp opens.
+- [ ] Reset the message and verify it returns to the latest form details.
+- [ ] Test both Call links on a mobile device.
+- [ ] Verify required name/mobile/date fields and invalid date handling.
+- [ ] Verify the page on desktop and mobile.
+- [ ] Confirm the hotel team understands that WhatsApp messages are customer-initiated and the website stores no booking records.
 
-## Smoke-test checklist
+## Future upgrade path
 
-- [ ] Future check-in and later check-out accepted.
-- [ ] Same-day checkout, past dates, invalid calendar dates and stays over 30 nights rejected.
-- [ ] Guest and room bounds enforced server-side.
-- [ ] Invalid email/phone and oversized notes rejected.
-- [ ] Honeypot submissions do not create database rows.
-- [ ] Valid request creates exactly one pending row and returns a reference.
-- [ ] Public anonymous role cannot read, update or delete reservation rows.
-- [ ] Mobile layout and keyboard date/select controls verified on physical devices.
-
-## Release gate
-
-Do not call this a live booking engine until inventory, tariff, staff workflow, notification delivery and end-to-end production tests have been completed.
+If the hotel later needs an automatic enquiry register, staff dashboard, confirmed inventory, rate calculation or payment collection, add a managed backend or booking/PMS integration as a separate phase.
