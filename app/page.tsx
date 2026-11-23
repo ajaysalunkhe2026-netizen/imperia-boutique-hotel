@@ -93,10 +93,8 @@ export default function Home() {
         </div>
         <div className="reference-booking" id="booking-bar">
           <div className="reference-booking-heading">PLAN YOUR STAY</div>
-          <div className="reference-booking-field"><span>CHECK-IN</span><strong>Choose your date</strong></div>
-          <div className="reference-booking-field"><span>CHECK-OUT</span><strong>Choose your date</strong></div>
-          <div className="reference-booking-field"><span>GUESTS</span><strong>Enquire with us</strong></div>
-          <Link href="/booking" className="reference-availability">CHECK AVAILABILITY <ArrowUpRight size={14}/></Link>
+          <div className="reference-booking-field reference-enquiry-copy"><span>ROOM AVAILABILITY & RATES</span><strong>Ask our hotel team about your dates and guests.</strong></div>
+          <Link href="/booking" className="reference-availability">SEND A BOOKING ENQUIRY <ArrowUpRight size={14}/></Link>
         </div>
       </section>
 
