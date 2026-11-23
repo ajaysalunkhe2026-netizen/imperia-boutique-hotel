@@ -125,7 +125,7 @@ export default async function SectionPage({ params }: { params: Promise<{ sectio
           <div className="subpage-contact-links">
             <a href="tel:+918369011041"><Phone size={17}/> +91 83690 11041</a>
             <a href={whatsapp} target="_blank" rel="noreferrer"><MessageCircle size={17}/> WhatsApp the hotel</a>
-            <a href="mailto:imperiaboutiquehotel@gmail.com"><Mail size={17}/> imperiaboutiquehotel@gmail.com</a>
+            <a href="mailto:imperiabotiquehotel@gmail.com"><Mail size={17}/> imperiabotiquehotel@gmail.com</a>
             <a href={mapUrl} target="_blank" rel="noreferrer"><MapPin size={17}/> Open directions</a>
           </div>
         </div>
