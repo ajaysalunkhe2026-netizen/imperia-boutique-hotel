@@ -165,7 +165,7 @@ export default function Home() {
           <div className="contact-detail"><span>CALL / WHATSAPP</span><a href="tel:+917700003843">+91 77000 03843</a><a href="https://wa.me/917700003843" target="_blank" rel="noreferrer">Message on WhatsApp <ArrowUpRight size={13} /></a></div>
           <div className="contact-detail"><span>EMAIL</span><a href="mailto:imperiaboutiquehotel@gmail.com">imperiaboutiquehotel@gmail.com</a></div>
         </div>
-        <Link className="button button-dark" href={mmtUrl} target="_blank">VIEW BOOKING LISTING <ArrowUpRight size={15} /></Link>
+        <a className="button button-dark" href="https://wa.me/918369011041?text=Hello%20Imperia%20Boutique%20Hotel%2C%20I%20would%20like%20to%20enquire%20about%20room%20availability%20and%20booking." target="_blank" rel="noreferrer">ENQUIRE DIRECTLY ON WHATSAPP <ArrowUpRight size={15} /></a>
       </section>
 
       <footer className="footer">
