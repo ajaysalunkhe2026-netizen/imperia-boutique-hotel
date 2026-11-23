@@ -119,29 +119,23 @@ export default function Home() {
           <div><p className="eyebrow">REST, RESET, RECHARGE</p><h2>Find your<br /><em>kind of stay.</em></h2></div>
           <p>Explore the room categories currently listed for Imperia Boutique Hotel. Please contact the hotel to confirm availability, inclusions and current rates before booking.</p>
         </div>
-        <div className="room-inventory-summary"><strong>38 rooms in total</strong><span>36 Deluxe Rooms</span><span>2 Suite Rooms</span></div>
         <div className="room-grid">
           <article className="room-card">
-            <RoomPhoto category="deluxe" number="01" title="Deluxe Room" />
-            <div className="room-details"><span className="room-kicker">36 ROOMS · 220 SQ. FT.</span><h3>Deluxe Room</h3><p>One king bed, city view and a comfortable space for a practical stay in Rabale.</p>
-              <div className="room-facts"><span><BedDouble size={15} /> 1 King Bed</span><span>220 sq. ft. / 20 sq. m.</span><span>City View</span></div>
-              <h4 className="room-feature-heading">In-room facilities</h4>
-              <ul className="room-feature-list"><li>Air conditioning</li><li>Wi-Fi</li><li>In-room dining</li><li>Mineral water</li><li>Work desk</li><li>Kettle</li><li>Hot water</li><li>Fire extinguisher</li><li>Emergency exit map</li><li>CCTV in property areas</li></ul>
-              <Link className="under-link" href="#enquire">ENQUIRE ABOUT DELUXE ROOM <ArrowUpRight size={14} /></Link>
+            <RoomPhoto category="deluxe" number="A / 01" title="Amber Stone" />
+            <div className="room-details"><span className="room-kicker">THE AMBER STONE ROOM</span><h3>Amber Stone</h3><p>A comfortable room category listed with a king bed and city view.</p>
+              <div className="room-facts"><span><BedDouble size={15} /> King bed</span><span>220 sq. ft.</span><span>City view</span></div>
+              <Link className="under-link" href="#enquire">ENQUIRE ABOUT AMBER STONE <ArrowUpRight size={14} /></Link>
             </div>
           </article>
           <article className="room-card room-card-offset">
-            <RoomPhoto category="suite" number="02" title="Suite Room" />
-            <div className="room-details"><span className="room-kicker">2 ROOMS · 350 SQ. FT.</span><h3>Suite Room</h3><p>A larger suite with one king bed, a separate living room and city view.</p>
-              <div className="room-facts"><span><BedDouble size={15} /> 1 King Bed</span><span>350 sq. ft. / 33 sq. m.</span><span>City View</span></div>
-              <h4 className="room-feature-heading">In-room facilities</h4>
-              <ul className="room-feature-list"><li>Separate living area</li><li>Air conditioning</li><li>Wi-Fi and in-room dining</li><li>Mini fridge and refrigerator</li><li>Kettle and dining area</li><li>Work desk and dining table</li><li>Cash safety locker</li><li>Bathtub and Jacuzzi</li><li>Shaving mirror and toiletries</li><li>Dental kit</li><li>Hot and cold water</li><li>TV, telephone and sofa</li><li>Center table and housekeeping</li><li>Laundry service and room service</li><li>Fire extinguisher, emergency exit map and CCTV</li></ul>
-              <Link className="under-link" href="#enquire">ENQUIRE ABOUT SUITE ROOM <ArrowUpRight size={14} /></Link>
+            <RoomPhoto category="suite" number="B / 02" title="Opal Suite" />
+            <div className="room-details"><span className="room-kicker">THE OPAL SUITE</span><h3>Opal Suite</h3><p>A larger suite category listed with a city view and additional living space.</p>
+              <div className="room-facts"><span>350 sq. ft.</span><span>City view</span><span>Additional living space</span></div>
+              <Link className="under-link" href="#enquire">ENQUIRE ABOUT OPAL SUITE <ArrowUpRight size={14} /></Link>
             </div>
           </article>
         </div>
-        <p className="room-inventory-note">Room inventory: 8 Deluxe Rooms each on the 1st, 2nd and 3rd floors; 6 Deluxe Rooms and 1 Suite Room each on the 4th and 5th floors.</p>
-        <p className="source-note">Room categories, quantities, dimensions and facilities are based on details supplied by the hotel. Please confirm current availability and applicable charges directly with the property.</p>
+        <p className="source-note">Room names and published dimensions are based on the hotel’s existing travel listing and should be reconfirmed with the property. Please confirm current availability and applicable charges directly with the hotel.</p>
       </section>
 
       <section className="amenities section" id="amenities">
