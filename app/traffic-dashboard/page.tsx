@@ -68,7 +68,7 @@ export default async function TrafficDashboardPage() {
         </div>
         {role === "technical_admin" && (
           <div className="traffic-admin-notice">
-            <div><strong>Technical Admin access</strong><p>You are authorised to manage dashboard users, role assignments, security and analytics configuration. These controls remain server-restricted to the Technical Admin role.</p></div>
+            <div><strong>Technical Admin access</strong><p>Your account is assigned the exclusive Technical Admin role. Owner and General Manager accounts cannot change role assignments or technical settings. Dedicated admin management screens are not built yet.</p></div>
             <span>ADMIN ROLE</span>
           </div>
         )}
