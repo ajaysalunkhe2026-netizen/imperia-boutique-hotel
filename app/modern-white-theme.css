@@ -76,3 +76,39 @@ body{background:#fff;color:var(--ink)}
   .reference-booking-field strong{font-size:9px}
   .section{padding:65px 6%}
 }
+
+/* Mobile and desktop polish: use one navigation system and a restrained monogram */
+.topline,.header,#mobile-nav{display:none!important}
+.monogram{
+  width:42px;height:42px;border:1px solid #bd9145;color:#10213d;
+  display:grid;place-items:center;font:30px 'Playfair Display',Georgia,serif;
+}
+.monogram:before{content:none}
+.monogram span{display:inline;color:#bd9145}
+.reference-nav{border-bottom:1px solid rgba(16,33,61,.07)}
+@media(max-width:850px){
+  .reference-white-panel{width:100%;padding-left:6%;padding-right:6%}
+  .reference-nav{justify-content:space-between}
+  .reference-copy{width:min(88%,430px);margin-left:2%;margin-right:0}
+  .reference-copy h1{max-width:100%;overflow-wrap:normal}
+  .reference-intro{width:100%;max-width:310px}
+  .reference-booking{grid-template-columns:1fr 1fr;align-items:stretch}
+  .reference-booking-field{min-width:0}
+  .reference-booking-field strong{overflow-wrap:anywhere}
+  .intro-grid{display:grid;grid-template-columns:minmax(0,1fr);width:100%;gap:22px}
+  .intro-grid>div{width:100%;min-width:0}
+  .intro-text{max-width:none}
+  .intro-lead{font-size:clamp(19px,5vw,23px);line-height:1.55}
+  .intro-text>p:not(.intro-lead){font-size:13px}
+  .section-heading>p{max-width:none}
+  .location-info{max-width:100%;min-width:0}
+}
+@media(max-width:420px){
+  .reference-white-panel{height:590px}
+  .reference-copy{margin-top:38px}
+  .reference-copy h1{font-size:clamp(48px,13vw,56px)}
+  .reference-booking{left:5%;right:5%;padding:13px}
+  .reference-booking-field{padding-left:9px}
+  .reference-booking-field:nth-of-type(4){padding-left:0}
+  .intro-grid{gap:18px}
+}
