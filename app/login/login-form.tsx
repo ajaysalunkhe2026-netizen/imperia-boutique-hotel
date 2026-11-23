@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
@@ -18,7 +18,7 @@ export default function LoginForm() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
 
-  async function sendOtp(event: React.FormEvent<HTMLFormElement>) {
+  async function sendOtp(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
     setNotice("");
@@ -52,7 +52,7 @@ export default function LoginForm() {
     }
   }
 
-  async function verifyOtp(event: React.FormEvent<HTMLFormElement>) {
+  async function verifyOtp(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
     setNotice("");
