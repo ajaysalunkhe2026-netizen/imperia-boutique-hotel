@@ -10,6 +10,14 @@ const hotelAddress =
 const mapUrl = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(hotelAddress);
 const mmtUrl = "https://www.makemytrip.com/hotels/hotel-details/?hotelId=202609221452583835";
 
+const roomImages: { deluxe: string | null; suite: string | null } = { deluxe: null, suite: null }; // Add official image paths here when the photographer delivers the photos.
+
+function RoomPhoto({ category, number, title }: { category: "deluxe" | "suite"; number: string; title: string }) {
+  const src = roomImages[category];
+  if (src) return <div className="room-photo"><Image src={src} alt={title} fill sizes="(max-width: 850px) 100vw, 45vw" style={{ objectFit: "cover" }} /></div>;
+  return <PhotoPending number={number} title={title} />;
+}
+
 function PhotoPending({ number, title, wide = false }: { number: string; title: string; wide?: boolean }) {
   return (
     <div className={`photo-pending ${wide ? "photo-pending-wide" : ""}`} role="img" aria-label={`${title} — official hotel photograph pending`}>
@@ -85,10 +93,8 @@ export default function Home() {
         </div>
         <div className="reference-booking" id="booking-bar">
           <div className="reference-booking-heading">PLAN YOUR STAY</div>
-          <div className="reference-booking-field"><span>CHECK-IN</span><strong>Choose your date</strong></div>
-          <div className="reference-booking-field"><span>CHECK-OUT</span><strong>Choose your date</strong></div>
-          <div className="reference-booking-field"><span>GUESTS</span><strong>Enquire with us</strong></div>
-          <Link href="/booking" className="reference-availability">CHECK AVAILABILITY <ArrowUpRight size={14}/></Link>
+          <div className="reference-booking-field reference-enquiry-copy"><span>ROOM AVAILABILITY & RATES</span><strong>Ask our hotel team about your dates and guests.</strong></div>
+          <Link href="/booking" className="reference-availability">SEND A BOOKING ENQUIRY <ArrowUpRight size={14}/></Link>
         </div>
       </section>
 
@@ -113,21 +119,21 @@ export default function Home() {
         </div>
         <div className="room-grid">
           <article className="room-card">
-            <PhotoPending number="A / 01" title="Amber Stone" />
+            <RoomPhoto category="deluxe" number="A / 01" title="Amber Stone" />
             <div className="room-details"><span className="room-kicker">THE AMBER STONE ROOM</span><h3>Amber Stone</h3><p>A comfortable room category listed with a king bed and city view.</p>
-              <div className="room-facts"><span><BedDouble size={15} /> King bed</span><span>220 sq. ft.</span><span>Up to 2 adults</span></div>
-              <Link className="under-link" href="#enquire">ENQUIRE ABOUT THIS ROOM <ArrowUpRight size={14} /></Link>
+              <div className="room-facts"><span><BedDouble size={15} /> King bed</span><span>220 sq. ft.</span><span>City view</span></div>
+              <Link className="under-link" href="#enquire">ENQUIRE ABOUT AMBER STONE <ArrowUpRight size={14} /></Link>
             </div>
           </article>
           <article className="room-card room-card-offset">
-            <PhotoPending number="B / 02" title="Opal Suite" />
+            <RoomPhoto category="suite" number="B / 02" title="Opal Suite" />
             <div className="room-details"><span className="room-kicker">THE OPAL SUITE</span><h3>Opal Suite</h3><p>A larger suite category listed with a city view and additional living space.</p>
-              <div className="room-facts"><span><BedDouble size={15} /> Suite</span><span>350 sq. ft.</span><span>City view</span></div>
-              <Link className="under-link" href="#enquire">ENQUIRE ABOUT THIS SUITE <ArrowUpRight size={14} /></Link>
+              <div className="room-facts"><span>350 sq. ft.</span><span>City view</span><span>Additional living space</span></div>
+              <Link className="under-link" href="#enquire">ENQUIRE ABOUT OPAL SUITE <ArrowUpRight size={14} /></Link>
             </div>
           </article>
         </div>
-        <p className="source-note">Room names and published dimensions are based on a third-party travel listing and should be reconfirmed with the hotel. <a href={mmtUrl} target="_blank" rel="noreferrer">View listing <ArrowUpRight size={12} /></a></p>
+        <p className="source-note">Room names and published dimensions are based on the hotel’s existing travel listing and should be reconfirmed with the property. Please confirm current availability and applicable charges directly with the hotel.</p>
       </section>
 
       <section className="amenities section" id="amenities">

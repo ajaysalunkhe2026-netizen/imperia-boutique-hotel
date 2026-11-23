@@ -23,7 +23,7 @@ const pages = {
   rooms: {
     eyebrow: "ROOMS & SUITES",
     title: "Find your place to unwind.",
-    intro: "Explore room categories listed for Imperia Boutique Hotel. Room photographs and live availability are being confirmed with the property.",
+    intro: "Explore the two room categories currently listed for Imperia Boutique Hotel: Amber Stone and Opal Suite. Contact the hotel to confirm current availability, rates and room details.",
     sections: [
       ["Amber Stone", "A room category listed with a king bed and city view. Published dimensions: 220 sq. ft. Please reconfirm the layout, occupancy and inclusions with the hotel."],
       ["Opal Suite", "A suite category listed with a city view and additional living space. Published dimensions: 350 sq. ft. Please reconfirm the layout, occupancy and inclusions with the hotel."],
