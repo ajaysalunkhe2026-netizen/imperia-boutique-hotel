@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import TrafficBackButton from "./traffic-back-button";
 import { Activity, ArrowLeft, ArrowUpRight, BarChart3, Globe2, MousePointerClick, Smartphone, ShieldCheck } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -24,7 +25,7 @@ export default function TrafficDashboardPage() {
     <main className="traffic-dashboard">
       <header className="traffic-header">
         <Link href="/" className="traffic-brand"><span className="traffic-mark">I.</span><span>IMPERIA<small>BOUTIQUE HOTEL</small></span></Link>
-        <Link href="/" className="traffic-back"><ArrowLeft size={15}/> BACK TO WEBSITE</Link>
+        <TrafficBackButton />
       </header>
       <section className="traffic-main">
         <div className="traffic-eyebrow"><span/> WEBSITE PERFORMANCE</div>
