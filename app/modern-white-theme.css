@@ -1,0 +1,78 @@
+/* IMPERIA Modern White theme — approved mobile-first direction */
+:root{
+  --ink:#10213d;--forest:#10213d;--forest2:#183254;--paper:#fff;--cream:#f5f1e9;
+  --gold:#bd9145;--muted:#697386;--line:rgba(16,33,61,.14);
+}
+body{background:#fff;color:var(--ink)}
+.topline{background:#10213d;color:#e8d6ad}
+.header{background:#fff;border-bottom:1px solid #edf0f4}
+.monogram{position:relative;border:0;color:#10213d;font-size:0;width:42px;height:42px}
+.monogram:before{content:"♛";font:30px Georgia,serif;color:#bd9145;position:absolute;inset:0;display:grid;place-items:center}
+.monogram span{display:none}
+.wordmark-text{color:#10213d}
+.wordmark-text small{color:#8c744e}
+.nav a,.header-cta{color:#10213d}
+.header-cta{background:#10213d;color:#fff;border-color:#10213d}
+.header-cta svg{color:#e5c98d}
+.hero-reference{background:#f7f8fa;color:#10213d}
+.reference-white-panel{background:#fff}
+.reference-topline{color:#6b7587}
+.reference-copy h1{color:#10213d}
+.reference-copy h1 em{color:#bd9145}
+.reference-intro{color:#5e6b7f}
+.reference-cta,.reference-availability{background:#10213d;color:#fff}
+.reference-booking{border:1px solid #edf0f4}
+.reference-booking-heading{color:#10213d}
+.reference-booking-field span{color:#9b7b43}
+.reference-availability{background:#10213d}
+.section{background:#fff}
+.rooms{background:#f5f7fa}
+.amenities{background:#10213d;color:#fff}
+.location{background:#fff}
+.enquire{background:#f5f1e9}
+.button-gold{background:#bd9145;color:#10213d}
+.button-dark{background:#10213d;color:#fff}
+.footer{background:#10213d;color:#f5f1e9}
+.footer-bottom{color:#c5cbd5}
+.mobile-nav{background:#fff;border-bottom:1px solid #e6eaf0}
+.mobile-nav a{color:#10213d}
+.reference-menu{color:#10213d}
+@media(max-width:850px){
+  .hero-reference{height:900px;min-height:900px;background:#f5f1e9}
+  .hero-reference .reference-photo{inset:0;background:#e9edf2}
+  .reference-photo-shade{background:linear-gradient(180deg,rgba(16,33,61,.02) 20%,rgba(16,33,61,.12) 55%,rgba(16,33,61,.62) 100%)}
+  .reference-white-panel{height:590px;background:#fff;border-radius:0 0 38% 0 / 0 0 9% 0;box-shadow:0 14px 40px rgba(16,33,61,.08)}
+  .reference-topline{color:#748096}
+  .reference-nav{height:76px}
+  .reference-copy{margin-top:52px}
+  .reference-copy h1{font-size:clamp(54px,10.5vw,72px);line-height:1.02}
+  .reference-intro{font-size:12px;max-width:300px}
+  .reference-cta{min-height:48px;padding:0 20px}
+  .reference-booking{background:#fff;border:1px solid #e8ebf0;box-shadow:0 12px 35px rgba(16,33,61,.15);border-radius:10px}
+  .reference-booking-heading{font-size:18px}
+  .reference-booking-field{border-color:#e7ebf1}
+  .reference-availability{min-height:48px;border-radius:5px}
+  .section{padding:76px 7%}
+  .intro-grid,.amenities-grid,.location-grid{grid-template-columns:1fr;gap:28px;padding-top:40px}
+  .intro h2,.section-heading h2,.amenities h2,.location h2,.enquire h2{font-size:clamp(46px,10vw,64px)}
+  .section-heading{align-items:flex-start;flex-direction:column;gap:18px;padding:42px 0 30px}
+  .room-grid{grid-template-columns:1fr;gap:35px}
+  .room-card-offset{margin-top:0}
+  .room-card .photo-pending{height:290px}
+  .intro>.photo-pending{height:300px}
+  .amenities-grid{padding-top:42px}
+  .checkin-strip{flex-wrap:wrap}
+  .footer-main{gap:22px;flex-wrap:wrap}
+  .footer-bottom{gap:12px;flex-wrap:wrap}
+}
+@media(max-width:420px){
+  .hero-reference{height:920px;min-height:920px}
+  .reference-white-panel{height:600px}
+  .reference-copy{margin-top:42px}
+  .reference-copy h1{font-size:55px}
+  .reference-intro{max-width:275px;font-size:11px}
+  .reference-booking{bottom:16px;padding:14px;gap:10px}
+  .reference-booking-heading{font-size:16px}
+  .reference-booking-field strong{font-size:9px}
+  .section{padding:65px 6%}
+}
