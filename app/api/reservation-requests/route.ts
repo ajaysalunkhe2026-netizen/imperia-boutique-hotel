@@ -78,13 +78,14 @@ export async function POST(request: NextRequest) {
 
     const resendKey = process.env.RESEND_API_KEY;
     const notifyEmail = process.env.RESERVATION_NOTIFY_EMAIL || "imperiabotiquehotel@gmail.com";
-    if (resendKey) {
+    const senderEmail = process.env.RESERVATION_FROM_EMAIL;
+    if (resendKey && senderEmail) {
       notificationTasks.push((async () => {
         const response = await fetch("https://api.resend.com/emails", {
           method: "POST",
           headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
           body: JSON.stringify({
-            from: process.env.RESERVATION_FROM_EMAIL || "Imperia Reservations <onboarding@resend.dev>",
+            from: senderEmail,
             to: [notifyEmail],
             subject: `New reservation enquiry ${reference}`,
             text: [
