@@ -10,7 +10,15 @@ const hotelAddress =
 const mapUrl = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(hotelAddress);
 const mmtUrl = "https://www.makemytrip.com/hotels/hotel-details/?hotelId=202609221452583835";
 
-const roomImages: { deluxe: string | null; suite: string | null } = { deluxe: null, suite: null }; // Add official image paths here when the photographer delivers the photos.\n\nfunction RoomPhoto({ category, number, title }: { category: "deluxe" | "suite"; number: string; title: string }) {\n  const src = roomImages[category];\n  if (src) return <div className="room-photo"><Image src={src} alt={title} fill sizes="(max-width: 850px) 100vw, 45vw" style={{ objectFit: "cover" }} /></div>;\n  return <PhotoPending number={number} title={title} />;\n}\n\nfunction PhotoPending({ number, title, wide = false }: { number: string; title: string; wide?: boolean }) {
+const roomImages: { deluxe: string | null; suite: string | null } = { deluxe: null, suite: null }; // Add official image paths here when the photographer delivers the photos.
+
+function RoomPhoto({ category, number, title }: { category: "deluxe" | "suite"; number: string; title: string }) {
+  const src = roomImages[category];
+  if (src) return <div className="room-photo"><Image src={src} alt={title} fill sizes="(max-width: 850px) 100vw, 45vw" style={{ objectFit: "cover" }} /></div>;
+  return <PhotoPending number={number} title={title} />;
+}
+
+function PhotoPending({ number, title, wide = false }: { number: string; title: string; wide?: boolean }) {
   return (
     <div className={`photo-pending ${wide ? "photo-pending-wide" : ""}`} role="img" aria-label={`${title} — official hotel photograph pending`}>
       <span className="photo-index">{number}</span>
