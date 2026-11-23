@@ -71,7 +71,83 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "The reservation service is temporarily unavailable. Please contact the hotel directly." }, { status: 503 });
     }
 
-    return NextResponse.json({ ok: true, reference }, { status: 201 });
+    // Notifications are best-effort: a provider outage must not lose a saved enquiry.
+    const stay = `${checkIn} to ${checkOut} (${nights} night${nights === 1 ? "" : "s"})`;
+    const guestSummary = `${adults} adult(s), ${children} child(ren), ${rooms} room(s)`;
+    const notificationTasks: Promise<void>[] = [];
+
+    const resendKey = process.env.RESEND_API_KEY;
+    const notifyEmail = process.env.RESERVATION_NOTIFY_EMAIL || "imperiabotiquehotel@gmail.com";
+    if (resendKey) {
+      notificationTasks.push((async () => {
+        const response = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
+          body: JSON.stringify({
+            from: process.env.RESERVATION_FROM_EMAIL || "Imperia Reservations <onboarding@resend.dev>",
+            to: [notifyEmail],
+            subject: `New reservation enquiry ${reference}`,
+            text: [
+              "A new reservation enquiry has been submitted.",
+              `Reference: ${reference}`, `Guest: ${name.trim()}`, `Stay: ${stay}`,
+              `Guests/rooms: ${guestSummary}`, `Room preference: ${roomType}`,
+              `Mobile: ${phone.trim()}`, `Email: ${email.trim()}`,
+              `Notes: ${typeof notes === "string" ? notes.trim() : "None"}`,
+              "Status: Pending hotel confirmation. This is not a confirmed booking.",
+            ].join("\\n"),
+          }),
+        });
+        if (!response.ok) throw new Error(`Reservation email provider returned ${response.status}`);
+      })());
+    }
+
+    const waToken = process.env.WHATSAPP_CLOUD_ACCESS_TOKEN;
+    const waPhoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID;
+    const waRecipients = (process.env.WHATSAPP_NOTIFY_TO || "").split(",").map((v) => v.replace(/\\D/g, "")).filter(Boolean);
+    const waTemplate = process.env.WHATSAPP_TEMPLATE_NAME;
+    if (waToken && waPhoneNumberId && waTemplate && waRecipients.length) {
+      for (const recipient of waRecipients) {
+        notificationTasks.push((async () => {
+          const response = await fetch(`https://graph.facebook.com/v22.0/${waPhoneNumberId}/messages`, {
+            method: "POST",
+            headers: { Authorization: `Bearer ${waToken}`, "Content-Type": "application/json" },
+            body: JSON.stringify({
+              messaging_product: "whatsapp",
+              recipient_type: "individual",
+              to: recipient,
+              type: "template",
+              template: {
+                name: waTemplate,
+                language: { code: process.env.WHATSAPP_TEMPLATE_LANGUAGE || "en" },
+                components: [{
+                  type: "body",
+                  parameters: [
+                    { type: "text", text: reference },
+                    { type: "text", text: name.trim() },
+                    { type: "text", text: stay },
+                    { type: "text", text: guestSummary },
+                    { type: "text", text: phone.trim() },
+                  ],
+                }],
+              },
+            }),
+          });
+          if (!response.ok) throw new Error(`WhatsApp provider returned ${response.status}`);
+        })());
+      }
+    }
+
+    const notificationResults = await Promise.allSettled(notificationTasks);
+    const failedNotifications = notificationResults.filter((result) => result.status === "rejected").length;
+    if (failedNotifications) {
+      console.error("Reservation notification delivery failed:", failedNotifications);
+    }
+
+    return NextResponse.json({
+      ok: true,
+      reference,
+      notificationStatus: notificationTasks.length === 0 ? "not_configured" : failedNotifications ? "partial_or_failed" : "accepted_by_provider",
+    }, { status: 201 });
   } catch (error) {
     console.error("Reservation request error:", error instanceof Error ? error.message : "Unknown error");
     return NextResponse.json({ error: "The reservation service is temporarily unavailable. Please contact the hotel directly." }, { status: 503 });
