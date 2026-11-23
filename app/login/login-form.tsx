@@ -23,8 +23,8 @@ export default function LoginForm() {
     setError("");
     setNotice("");
 
-    const digits = phone.replace(/\\D/g, "").replace(/^91(?=\\d{10}$)/, "");
-    if (!/^\\d{10}$/.test(digits)) {
+    const digits = phone.replace(/\D/g, "").replace(/^91(?=\d{10}$)/, "");
+    if (!/^\d{10}$/.test(digits)) {
       setError("Enter a valid 10-digit Indian mobile number.");
       return;
     }
@@ -57,7 +57,7 @@ export default function LoginForm() {
     setError("");
     setNotice("");
 
-    if (!/^\\d{6}$/.test(otp)) {
+    if (!/^\d{6}$/.test(otp)) {
       setError("Enter the 6-digit OTP.");
       return;
     }
@@ -101,7 +101,7 @@ export default function LoginForm() {
               autoComplete="tel-national"
               maxLength={10}
               value={phone}
-              onChange={(event) => setPhone(event.target.value.replace(/\\D/g, "").slice(0, 10))}
+              onChange={(event) => setPhone(event.target.value.replace(/\D/g, "").slice(0, 10))}
               placeholder="10-digit mobile number"
               disabled={!supabaseConfigured || busy}
               required
@@ -122,7 +122,7 @@ export default function LoginForm() {
             autoComplete="one-time-code"
             maxLength={6}
             value={otp}
-            onChange={(event) => setOtp(event.target.value.replace(/\\D/g, "").slice(0, 6))}
+            onChange={(event) => setOtp(event.target.value.replace(/\D/g, "").slice(0, 6))}
             placeholder="Enter OTP"
             disabled={busy}
             required
