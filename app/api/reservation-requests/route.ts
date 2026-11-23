@@ -10,7 +10,17 @@ function validDate(value: unknown): value is string {
 
 export async function POST(request: NextRequest) {
   try {
+    const contentLength = Number(request.headers.get("content-length") ?? 0);
+    if (contentLength > 12_000) {
+      return NextResponse.json({ error: "Request is too large." }, { status: 413 });
+    }
+    if (!request.headers.get("content-type")?.toLowerCase().includes("application/json")) {
+      return NextResponse.json({ error: "A JSON request is required." }, { status: 415 });
+    }
     const body = await request.json();
+    if (!body || typeof body !== "object" || Array.isArray(body)) {
+      return NextResponse.json({ error: "Invalid reservation request." }, { status: 400 });
+    }
     if (typeof body.website === "string" && body.website.trim()) {
       return NextResponse.json({ ok: true, reference: "RECEIVED" });
     }
@@ -20,9 +30,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Please provide valid check-in and check-out dates." }, { status: 400 });
     }
     const nights = (Date.parse(checkOut + "T00:00:00Z") - Date.parse(checkIn + "T00:00:00Z")) / 86400000;
-    const today = new Date();
-    today.setUTCHours(0, 0, 0, 0);
-    if (Date.parse(checkIn + "T00:00:00Z") < today.getTime() || nights < 1 || nights > 30) {
+    const today = new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit",
+    }).format(new Date());
+    if (checkIn < today || nights < 1 || nights > 30) {
       return NextResponse.json({ error: "Please choose future dates for a stay of 1 to 30 nights." }, { status: 400 });
     }
     if (!Number.isInteger(adults) || adults < 1 || adults > 6 ||
