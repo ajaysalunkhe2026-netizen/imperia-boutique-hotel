@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import "./modern-white-theme.css";
 import { Analytics } from "@vercel/analytics/next";
 
 const siteUrl = "https://imperiaboutiquehotel.in";
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#17231f",
+  themeColor: "#10213d",
   width: "device-width",
   initialScale: 1,
 };
